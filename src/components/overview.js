@@ -20,10 +20,11 @@ export class Overview {
         walletInstalled: false,
         walletButtonText: '',
         loginAccount: null,
+        theme: 'dark',
       },
       methods: {
         login: this.login.bind(this),
-        toggleMode: options.mode.update,
+        toogleTheme: this.toogleTheme.bind(this),
       },
       computed: {
         ellipsisAccount: function () {
@@ -41,6 +42,8 @@ export class Overview {
     this.lastRefreshBalancesTime = 0
     this.ep = new EventProxy()
     this.options = options
+
+    this.options.mode.set('light')
   }
 
   onAccountChanged(handler) {
@@ -85,6 +88,12 @@ export class Overview {
       balances[symbol] = item
     }
     this.vm.balances = balances
+  }
+
+  toogleTheme() {
+    const newTheme = this.vm.theme === 'dark' ? 'light' : 'dark'
+    this.options.mode.set(this.vm.theme)
+    this.vm.theme = newTheme
   }
 
   login() {
