@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in pools" :key="item.id">
+                <tr v-for="(item, index) in pools" :key="item.id" v-bind:class="[item.ptype === 2 ? 'pointer' : '']">
                     <td></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.title }}</td>
@@ -39,7 +39,7 @@
                     </template>
                     <td>
                         <button class="pure-button button-xsmall">Claim</button>
-                        <button class="pure-button button-xsmall" v-show="item.state === 2">Exit</button>
+                        <button class="pure-button button-xsmall" v-if="item.state === 2">Exit</button>
                     </td>
                 </tr>
             </tbody>

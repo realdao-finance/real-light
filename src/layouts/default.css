@@ -5,6 +5,14 @@
   text-align: center;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
+.pointer:hover {
+  background-color: gray;
+}
+
 .align-right {
   text-align: right;
 }

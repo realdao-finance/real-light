@@ -157,8 +157,9 @@ export class RealDAOHelper extends RealDAO {
     for (const item of results[3]) {
       const pool = Object.assign({}, item)
       pool.state = Number(pool.state)
+      pool.ptype = Number(pool.ptype)
       pool.totalPowerCorrect = Number(item.totalPower) + Number(item.accumulatedPower)
-      const ptype = Number(pool.ptype)
+      const ptype = pool.ptype
       if (ptype === 1) {
         // POOL_TYPE_LENDING
         const price = priceMap.get(item.tokenAddr)
