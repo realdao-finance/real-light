@@ -1,60 +1,63 @@
 <div id="mining">
-    <h3>Pools</h3>
-    <table class="pure-table pure-table-bordered">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Total Power</th>
-                <th>APY</th>
-                <th>State</th>
-                <th>Countdown</th>
-                <th>My Power</th>
-                <th>Claimed</th>
-                <th>Unclaimed</th>
-                <th>Operation</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item, index) in pools" :key="item.id">
-                <td></td>
-                <td>{{ item.id }}</td>
-                <td>{{ item.title }}</td>
-                <td>{{ item.totalPowerNormalizedLiteral }}</td>
-                <td>{{ item.apy }}</td>
-                <td>{{ item.state }}</td>
-                <td>{{ item.countown || 0 }}</td>
-                <template v-if="my.length>0">
-                    <td>{{ my[index].powerNormalizedLiteral }} ({{ my[index].powerRatio }})</td>
-                    <td>{{ my[index].claimedLiteral }}</td>
-                    <td>{{ my[index].unclaimedLiteral }}</td>
-                </template>
-                <template v-else>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                </template>
-                <td>
-                    <button class="pure-button button-xsmall">Claim</button>
-                    <button class="pure-button button-xsmall" v-show="item.state === 2">Exit</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="pure-g">
-        <div class="pure-u-1-3"></div>
-        <div class="pure-u-1-3 box">
-            <form class="pure-form">
-                <fieldset>
-                    <legend>Stake LP Token</legend>
-                    <a href="">Provide liquidity in uniswap</a>
-                    <input placeholder="Amount" />
-                    <button class="pure-button">Approve</button>
-                    <button class="pure-button">Stake</button>
-                </fieldset>
-            </form>
+    <div v-if="!loaded">Loading...</div>
+    <div v-else>
+        <h3>Pools</h3>
+        <table class="pure-table pure-table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Total Power</th>
+                    <th>APY</th>
+                    <th>State</th>
+                    <th>Countdown</th>
+                    <th>My Power</th>
+                    <th>Claimed</th>
+                    <th>Unclaimed</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in pools" :key="item.id">
+                    <td></td>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.totalPowerNormalizedLiteral }}</td>
+                    <td>{{ item.apy }}</td>
+                    <td>{{ item.state }}</td>
+                    <td>{{ item.countown || 0 }}</td>
+                    <template v-if="my.length>0">
+                        <td>{{ my[index].powerNormalizedLiteral }} ({{ my[index].powerRatio }})</td>
+                        <td>{{ my[index].claimedLiteral }}</td>
+                        <td>{{ my[index].unclaimedLiteral }}</td>
+                    </template>
+                    <template v-else>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </template>
+                    <td>
+                        <button class="pure-button button-xsmall">Claim</button>
+                        <button class="pure-button button-xsmall" v-show="item.state === 2">Exit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pure-g">
+            <div class="pure-u-1-3"></div>
+            <div class="pure-u-1-3 box">
+                <form class="pure-form">
+                    <fieldset>
+                        <legend>Stake LP Token</legend>
+                        <a href="">Provide liquidity in uniswap</a>
+                        <input placeholder="Amount" />
+                        <button class="pure-button">Approve</button>
+                        <button class="pure-button">Stake</button>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="pure-u-1-3"></div>
         </div>
-        <div class="pure-u-1-3"></div>
     </div>
 </div>

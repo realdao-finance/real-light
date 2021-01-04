@@ -21,6 +21,7 @@ export class Overview {
         walletButtonText: '',
         loginAccount: null,
         theme: 'dark',
+        loaded: false,
       },
       methods: {
         login: this.login.bind(this),
@@ -70,6 +71,7 @@ export class Overview {
     const overview = await realDAO.getOverview()
     console.log('overview:', overview)
     this.vm.overview = overview
+    this.vm.loaded = true
   }
 
   async _refreshBalances() {

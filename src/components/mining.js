@@ -6,6 +6,7 @@ export class Mining {
         pools: [],
         my: [],
         loginAccount: null,
+        loaded: false,
       },
       methods: {},
       computed: {},
@@ -37,5 +38,7 @@ export class Mining {
     console.log('miningInfo:', miningInfo)
     this.vm.pools = miningInfo.pools
     this.vm.my = miningInfo.my
+
+    this.vm.loaded = true
   }
 }
