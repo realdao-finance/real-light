@@ -19,6 +19,7 @@
 
 .button-xsmall {
   font-size: 70%;
+  border-radius: 10px;
 }
 
 form {
