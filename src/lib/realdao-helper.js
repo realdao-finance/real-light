@@ -87,14 +87,19 @@ export class RealDAOHelper extends RealDAO {
   }
 
   async getRTokenBalances(rToken, account) {
-    const reporter = await this.reporter()
+    await this.loadReporter()
+
+    const reporter = this.reporter()
     const result = await reporter.getRTokenBalances(rToken, account).call()
     return this._transformRTokenBalances(result)
   }
 
   async getAccountBalances(account) {
-    const reporter = await this.reporter()
-    const rds = await this.rds()
+    await this.loadReporter()
+    await this.loadRDS()
+
+    const reporter = this.reporter()
+    const rds = this.rds()
     const results = await Promise.all([rds.balanceOf(account).call(), reporter.getAllRTokenBalances(account).call()])
     const sheets = results[1].map(this._transformRTokenBalances.bind(this))
     const rdsBalanceLiteral = Number(results[0]) / RDS_POINT

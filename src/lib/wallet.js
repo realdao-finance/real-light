@@ -19,3 +19,9 @@ export function getDefaultAccount() {
 export function getChainId() {
   return window.ethereum.chainId
 }
+
+export function onAccountChanged(handler) {
+  if (window.ethereum) {
+    window.ethereum.on('accountsChanged', handler)
+  }
+}

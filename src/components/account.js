@@ -1,10 +1,10 @@
-export class Mining {
+export class Account {
   constructor(options) {
     this.vm = new Vue({
-      el: '#mining',
+      el: '#account',
       data: {
-        pools: [],
-        my: [],
+        sheets: [],
+        rds: {},
         address: null,
       },
       methods: {},
@@ -26,10 +26,11 @@ export class Mining {
   }
 
   async _refresh() {
+    if (!this.vm.address) return
     const realDAO = this.options.realDAO
-    const miningInfo = await realDAO.getPools(this.address)
-    console.log('miningInfo:', miningInfo)
-    this.vm.pools = miningInfo.pools
-    this.vm.my = miningInfo.my
+    const result = await realDAO.getAccountBalances(this.vm.address)
+    console.log('getAccountBalances:', result)
+    this.vm.sheets = result.sheets || []
+    this.vm.rds = result.rds || {}
   }
 }

@@ -1,4 +1,8 @@
 import * as wallet from '../lib/wallet.js'
+import { EventProxy } from '../lib/event-proxy.js'
+
+const ACCOUNT_CHANGE_EVENT = 'accountChanged'
+
 export class Overview {
   constructor(options) {
     this.vm = new Vue({
@@ -32,7 +36,12 @@ export class Overview {
         },
       },
     })
+    this.ep = new EventProxy()
     this.options = options
+  }
+
+  onAccountChanged(handler) {
+    this.ep.on(ACCOUNT_CHANGE_EVENT, handler)
   }
 
   async run() {
@@ -41,6 +50,7 @@ export class Overview {
     console.log('overview:', overview)
     this.vm.overview = overview
     this._checkWallet()
+    wallet.onAccountChanged(this._checkWallet.bind(this))
   }
 
   login() {
@@ -79,6 +89,7 @@ export class Overview {
         if (account) {
           this._setWalletButtonText('')
           this.vm.loginAccount = account
+          this.ep.emit(ACCOUNT_CHANGE_EVENT, account)
         } else {
           this._setWalletButtonText('Login')
         }
