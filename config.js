@@ -8,11 +8,11 @@ export default {
       indexServer: 'http://localhost:3000',
     },
     test: {
-      provider: 'ws://139.180.193.123:8545',
+      provider: 'ws://158.247.223.174:8545',
       chainId: '0x539',
-      supremeAddress: '0x1d736CBAB67422a524E6923A2e4f47C2Ae891335',
+      supremeAddress: '0x7e72757ae5aEFAA3748618E21e8cB4776Feb6164',
       etherscan: 'etherscan.io',
-      indexServer: 'http://139.180.193.123:3000',
+      indexServer: 'http://158.247.223.174:3000',
     },
     kovan: {
       provider: 'https://kovan.infura.io/v3/d3f8f9c2141b4561b6c7f23a34466d7c',

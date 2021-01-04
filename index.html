@@ -94,6 +94,45 @@
                 </div>
                 <hr />
             </div>
+            <div id="mining">
+                <table class="pure-table pure-table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Total Power</th>
+                            <th>APY</th>
+                            <th>State</th>
+                            <th>Countdown</th>
+                            <th>My Power</th>
+                            <th>Claimed</th>
+                            <th>Unclaimed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in pools" :key="item.id">
+                            <td></td>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.title }}</td>
+                            <td>{{ item.totalPowerNormalizedLiteral }}</td>
+                            <td>{{ item.apy }}</td>
+                            <td>{{ item.state }}</td>
+                            <td>{{ item.countown || 0 }}</td>
+                            <template v-if="my.length>0">
+                                <td>{{ my[index].powerNormalizedLiteral }} ({{ my[index].powerRatio }})</td>
+                                <td>{{ my[index].claimedLiteral }}</td>
+                                <td>{{ my[index].unclaimedLiteral }}</td>
+                            </template>
+                            <template v-else>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </template>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </body>
 
