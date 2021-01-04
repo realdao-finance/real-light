@@ -5,18 +5,19 @@ export class Mining {
       data: {
         pools: [],
         my: [],
-        address: null,
+        loginAccount: null,
       },
       methods: {},
       computed: {},
     })
+    this.lastRefreshTime = 0
     this.options = options
   }
 
-  setAddress(addr) {
-    const old = this.vm.address
-    this.vm.address = addr
-    if (old !== addr) {
+  setLoginAccount(account) {
+    const old = this.vm.loginAccount
+    this.vm.loginAccount = account
+    if (old !== account) {
       this._refresh()
     }
   }
@@ -26,8 +27,13 @@ export class Mining {
   }
 
   async _refresh() {
+    if (Date.now() - this.lastRefreshTime < this.options.minRefreshInterval) {
+      return
+    }
+    this.lastRefreshTime = Date.now()
+
     const realDAO = this.options.realDAO
-    const miningInfo = await realDAO.getPools(this.address)
+    const miningInfo = await realDAO.getPools(this.vm.loginAccount)
     console.log('miningInfo:', miningInfo)
     this.vm.pools = miningInfo.pools
     this.vm.my = miningInfo.my

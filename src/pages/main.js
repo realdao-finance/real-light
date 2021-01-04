@@ -2,7 +2,6 @@ import { RealDAOHelper } from '../lib/realdao-helper.js'
 import config from '../config.js'
 import { Overview } from '../components/overview.js'
 import { Mining } from '../components/mining.js'
-import { Account } from '../components/account.js'
 const { mode } = window.__pdm__
 
 function main() {
@@ -17,14 +16,13 @@ function main() {
   async function init() {
     await realDAO.loadOrchestrator()
 
-    const overview = new Overview({ realDAO, config: network, mode: mode })
-    const mining = new Mining({ realDAO, mode: mode })
-    const account = new Account({ realDAO })
+    const minRefreshInterval = 10000
+    const overview = new Overview({ realDAO, config: network, mode, minRefreshInterval })
+    const mining = new Mining({ realDAO, minRefreshInterval })
     // const unsubscribe = mode.subscribe((v) => console.log(v, '==========='))
 
     overview.onAccountChanged((addr) => {
-      account.setAddress(addr)
-      mining.setAddress(addr)
+      mining.setLoginAccount(addr)
     })
 
     overview.run()

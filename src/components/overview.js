@@ -16,6 +16,7 @@ export class Overview {
           rds: {},
           dol: {},
         },
+        balances: null,
         walletInstalled: false,
         walletButtonText: '',
         loginAccount: null,
@@ -36,6 +37,8 @@ export class Overview {
         },
       },
     })
+    this.lastRefreshOverViewTime = 0
+    this.lastRefreshBalancesTime = 0
     this.ep = new EventProxy()
     this.options = options
   }
@@ -45,12 +48,43 @@ export class Overview {
   }
 
   async run() {
+    this._refresh()
+    this._checkWallet()
+    wallet.onAccountChanged(this._checkWallet.bind(this))
+  }
+
+  async _refresh() {
+    this._refreshOverview()
+    this._refreshBalances()
+  }
+
+  async _refreshOverview() {
+    if (Date.now() - this.lastRefreshOverViewTime < this.options.minRefreshInterval) {
+      return
+    }
+    this.lastRefreshOverViewTime = Date.now()
     const realDAO = this.options.realDAO
     const overview = await realDAO.getOverview()
     console.log('overview:', overview)
     this.vm.overview = overview
-    this._checkWallet()
-    wallet.onAccountChanged(this._checkWallet.bind(this))
+  }
+
+  async _refreshBalances() {
+    if (!this.vm.loginAccount) return
+    if (Date.now() - this.lastRefreshBalancesTime < this.options.minRefreshInterval) {
+      return
+    }
+    this.lastRefreshBalancesTime = Date.now()
+    console.log('refreshBalances:', this.vm.loginAccount)
+    const realDAO = this.options.realDAO
+    const result = await realDAO.getAccountBalances(this.vm.loginAccount)
+    console.log('getAccountBalances:', result)
+    const balances = {}
+    for (const item of result.sheets) {
+      const symbol = 'r' + item.underlyingSymbol
+      balances[symbol] = item
+    }
+    this.vm.balances = balances
   }
 
   login() {
@@ -90,11 +124,13 @@ export class Overview {
           this._setWalletButtonText('')
           this.vm.loginAccount = account
           this.ep.emit(ACCOUNT_CHANGE_EVENT, account)
+          this._refresh()
         } else {
           this._setWalletButtonText('Login')
         }
       })
       .catch((err) => {
+        console.log('failed to get account:', err)
         this._setWalletButtonText('Account Not Found')
       })
   }
