@@ -1,5 +1,4 @@
 import * as wallet from '../wallet.js'
-
 export class Overview {
   constructor(options) {
     this.vm = new Vue({
@@ -19,6 +18,7 @@ export class Overview {
       },
       methods: {
         login: this.login.bind(this),
+        toggleMode: options.mode.update
       },
       computed: {
         ellipsisAccount: function () {
@@ -40,7 +40,6 @@ export class Overview {
     const overview = await realDAO.getOverview()
     console.log('overview:', overview)
     this.vm.overview = overview
-
     this._checkWallet()
   }
 
