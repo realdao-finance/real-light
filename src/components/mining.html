@@ -23,14 +23,14 @@
                     <td></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.title }}</td>
-                    <td>{{ item.totalPowerNormalizedLiteral }}</td>
-                    <td>{{ item.apy }}</td>
+                    <td>{{ item.totalPowerNormalizedLiteral.toFixed(0) }}</td>
+                    <td>{{ item.apy.toFixed(4) }}</td>
                     <td>{{ item.state }}</td>
                     <td>{{ item.startBlock }}</td>
                     <template v-if="my.length>0">
-                        <td>{{ my[index].powerNormalizedLiteral }} ({{ my[index].powerRatio }})</td>
-                        <td>{{ my[index].claimedLiteral }}</td>
-                        <td>{{ my[index].unclaimedLiteral }}</td>
+                        <td>{{ my[index].powerNormalizedLiteral.toFixed(0) }} ({{ my[index].powerRatio.toFixed(4) }})</td>
+                        <td>{{ my[index].claimedLiteral.toFixed(4) }}</td>
+                        <td>{{ my[index].unclaimedLiteral.toFixed(4) }}</td>
                     </template>
                     <template v-else>
                         <td>-</td>

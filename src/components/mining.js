@@ -24,7 +24,11 @@ export class Mining {
   }
 
   async run() {
-    this._refresh()
+    const refresh = this._refresh.bind(this)
+
+    // This is to wait for loginAccount
+    setTimeout(refresh, 1000)
+    setInterval(refresh, this.options.minRefreshInterval)
   }
 
   async _refresh() {
@@ -34,6 +38,7 @@ export class Mining {
     this.lastRefreshTime = Date.now()
 
     const realDAO = this.options.realDAO
+    console.log('loginAccount:', this.vm.loginAccount)
     const miningInfo = await realDAO.getPools(this.vm.loginAccount)
     console.log('miningInfo:', miningInfo)
     this.vm.pools = miningInfo.pools
