@@ -151,6 +151,7 @@ export class RealDAOHelper extends RealDAO {
     const totalPools = results[3].length
     for (const item of results[3]) {
       const pool = Object.assign({}, item)
+      pool.state = Number(pool.state)
       pool.totalPowerCorrect = Number(item.totalPower) + Number(item.accumulatedPower)
       const ptype = Number(pool.ptype)
       if (ptype === 1) {
@@ -173,7 +174,7 @@ export class RealDAOHelper extends RealDAO {
         }
         pool.lpUrl = baseUrl + exchangingTokens.shift()
       }
-      const state = Number(pool.state)
+      const state = pool.state
       if (state === 0) {
         // POOL_STATUS_NOT_START
         pool.countdown = Number(item.startBlock - latestBlockNum)
