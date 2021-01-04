@@ -11,7 +11,7 @@
                     <th>Total Power</th>
                     <th>APY</th>
                     <th>State</th>
-                    <th>Countdown</th>
+                    <th>Start Block</th>
                     <th>My Power</th>
                     <th>Claimed</th>
                     <th>Unclaimed</th>
@@ -26,7 +26,7 @@
                     <td>{{ item.totalPowerNormalizedLiteral }}</td>
                     <td>{{ item.apy }}</td>
                     <td>{{ item.state }}</td>
-                    <td>{{ item.countown || 0 }}</td>
+                    <td>{{ item.startBlock }}</td>
                     <template v-if="my.length>0">
                         <td>{{ my[index].powerNormalizedLiteral }} ({{ my[index].powerRatio }})</td>
                         <td>{{ my[index].claimedLiteral }}</td>
