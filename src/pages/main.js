@@ -16,8 +16,8 @@ function main() {
   async function init() {
     await realDAO.loadOrchestrator()
 
-    const overview = new Overview({ el: '#overview', realDAO, config: network, mode: mode })
-    const mining = new Mining({ el: '#mining', realDAO, mode: mode })
+    const overview = new Overview({ realDAO, config: network, mode: mode })
+    const mining = new Mining({ realDAO, mode: mode })
     // const unsubscribe = mode.subscribe((v) => console.log(v, '==========='))
 
     overview.run()

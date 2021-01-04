@@ -2,7 +2,7 @@ import * as wallet from '../lib/wallet.js'
 export class Overview {
   constructor(options) {
     this.vm = new Vue({
-      el: options.el,
+      el: '#overview',
       data: {
         overview: {
           totalSupplyAccLiteral: 0,

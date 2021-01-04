@@ -1,7 +1,7 @@
 export class Mining {
   constructor(options) {
     this.vm = new Vue({
-      el: options.el,
+      el: '#mining',
       data: {
         pools: [],
         my: [],
