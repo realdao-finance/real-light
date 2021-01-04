@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+.button-xsmall {
+  font-size: 70%;
+}
+
 form {
   padding: 0 40px 0 40px;
 }
