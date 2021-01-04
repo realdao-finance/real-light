@@ -1,4 +1,4 @@
-import * as wallet from '../wallet.js'
+import * as wallet from '../lib/wallet.js'
 export class Overview {
   constructor(options) {
     this.vm = new Vue({
@@ -18,7 +18,7 @@ export class Overview {
       },
       methods: {
         login: this.login.bind(this),
-        toggleMode: options.mode.update
+        toggleMode: options.mode.update,
       },
       computed: {
         ellipsisAccount: function () {
