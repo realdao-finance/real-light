@@ -1,3 +1,5 @@
+process.env.DEBUG = process.env.DEBUG || 'realdao*'
+
 const path = require('path')
 const express = require('express')
 const tinylr = require('tiny-lr')
@@ -49,7 +51,7 @@ function main() {
   debug('starting server')
   app.listen(port, (err) => {
     if (err) throw err
-    debug('listening on %d', port)
+    debug(`listening on http://127.0.0.1:${port}`)
 
     watch(path.join(srcDir, '**', '*'))
   })
