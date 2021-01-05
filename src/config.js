@@ -10,7 +10,7 @@ export default {
     test: {
       provider: 'ws://158.247.223.174:8545',
       chainId: '0x539',
-      supremeAddress: '0x7e72757ae5aEFAA3748618E21e8cB4776Feb6164',
+      supremeAddress: '0x527369778B12Cfd31D4A68ab9aE0a93EDf499a48',
       etherscan: 'etherscan.io',
       indexServer: 'http://158.247.223.174:3000',
     },
