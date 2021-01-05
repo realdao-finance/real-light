@@ -4,17 +4,17 @@
   <template v-else>
     <div class="pure-g">
       <div class="pure-u-3-5">
-        <span>Total Locked: {{ overview.totalSupplyAccLiteral.toFixed(0) }}$</span>
+        <span><b>Total Locked</b>: {{ overview.totalSupplyAccLiteral.toFixed(0) }}$</span>
         <span>|</span>
-        <span>Total Borrows: {{ overview.totalBorrowsAccLiteral.toFixed(0) }}$</span>
+        <span><b>Total Borrows</b>: {{ overview.totalBorrowsAccLiteral.toFixed(0) }}$</span>
         <span>|</span>
-        <span>Total Reserves: {{ overview.totalReservesAccLiteral.toFixed(0) }}$</span>
+        <span><b>Total Reserves</b>: {{ overview.totalReservesAccLiteral.toFixed(0) }}$</span>
         <span>|</span>
-        <span>RDS circulating: {{ overview.rds.circulating }}</span>
+        <span><b>RDS</b> circulating: {{ overview.rds.circulating }}</span>
         <span>,</span>
         <span>mined: {{ overview.rds.mined }}</span>
         <span>|</span>
-        <span>DOL supply: {{ overview.dol.totalSupply }}</span>
+        <span><b>DOL</b> supply: {{ overview.dol.totalSupply }}</span>
       </div>
       <div class="pure-u-2-5 align-right">
         <span v-if="!walletInstalled"><a href="https://metamask.io/">Install Metamask</a></span>
