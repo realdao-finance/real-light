@@ -1,4 +1,3 @@
-import * as wallet from '../lib/wallet.js'
 import { EventProxy } from '../lib/event-proxy.js'
 const { mode } = window.__pdm__
 
@@ -6,6 +5,9 @@ const ACCOUNT_CHANGE_EVENT = 'accountChanged'
 
 export class Header {
   constructor(options) {
+    this.config = options.config
+    this.service = options.service
+
     this.vm = new Vue({
       el: '#header',
       data: {
@@ -34,12 +36,10 @@ export class Header {
         },
         accountUrl: function () {
           if (!this.loginAccount) return ''
-          return `https://${options.config.etherscan}/address/${this.loginAccount}`
+          return `https://${options.config.network.etherscan}/address/${this.loginAccount}`
         },
       },
     })
-    this.options = options
-
     this.ep = new EventProxy()
     this.mode = mode
     this.mode.set('light')
@@ -55,8 +55,10 @@ export class Header {
   }
 
   async run() {
-    this._checkWallet()
-    wallet.onAccountChanged(this._checkWallet.bind(this))
+    const checkWallet = this._checkWallet.bind(this)
+    this.service.wallet.onAccountChanged(checkWallet)
+    this.service.wallet.onChainChanged(checkWallet)
+    checkWallet()
   }
 
   toogleTheme() {
@@ -66,6 +68,7 @@ export class Header {
   }
 
   login() {
+    const wallet = this.service.wallet
     wallet
       .connect()
       .then(() => {
@@ -76,12 +79,14 @@ export class Header {
       })
   }
 
-  _setWalletButtonText(str) {
-    console.log('wallet tip', str)
-    this.vm.walletButtonText = str
+  _showWalletButton(text) {
+    console.log('wallet button text', text)
+    this.vm.walletButtonText = text
+    this.vm.loginAccount = null
   }
 
   _checkWallet() {
+    const wallet = this.service.wallet
     if (!wallet.isInstalled()) {
       this.vm.walletInstalled = false
       return
@@ -89,27 +94,25 @@ export class Header {
     this.vm.walletInstalled = true
 
     if (!wallet.isConnected()) {
-      return this._setWalletButtonText('Login')
+      return this._showWalletButton('Login')
     }
-    if (wallet.getChainId() !== this.options.config.chainId) {
-      return this._setWalletButtonText('Wrong Network')
+    if (wallet.getChainId() !== this.config.network.chainId) {
+      return this._showWalletButton('Wrong Network')
     }
     wallet
       .getDefaultAccount()
       .then((account) => {
         console.log('selectAccount:', account)
         if (account) {
-          this._setWalletButtonText('')
           this.vm.loginAccount = account
           this.ep.emit(ACCOUNT_CHANGE_EVENT, account)
-          this._refresh()
         } else {
-          this._setWalletButtonText('Login')
+          this._showWalletButton('Login')
         }
       })
       .catch((err) => {
         console.log('failed to get account:', err)
-        this._setWalletButtonText('Account Not Found')
+        this._showWalletButton('Account Not Found')
       })
   }
 }

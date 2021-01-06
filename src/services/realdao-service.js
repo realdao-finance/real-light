@@ -6,18 +6,22 @@ const INITIAL_REWARD = 4
 const BLOCKS_PER_YEAR = 2102400
 const INITIAL_SUPPLY = 4200000
 
-export class RealDAOHelper extends RealDAO {
+export class RealDAOService extends RealDAO {
   constructor(options) {
     const realDAOOptions = {
       Web3: options.Web3,
       networks: RealDAO.Networks[options.env],
-      provider: options.config.provider,
-      supremeAddress: options.config.supremeAddress,
+      provider: options.network.provider,
+      supremeAddress: options.network.supremeAddress,
     }
     super(realDAOOptions)
     this.options = options
 
     this._lastRDSPrice = 1
+  }
+
+  async initialize() {
+    await this.loadOrchestrator()
   }
 
   async getOverview() {

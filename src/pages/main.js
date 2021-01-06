@@ -1,41 +1,42 @@
-import { RealDAOHelper } from '../lib/realdao-helper.js'
-import config from '../config.js'
+import { RealDAOService } from '../services/realdao-service.js'
+import { WalletService } from '../services/wallet-service.js'
+import { getConfig } from '../configs/index.js'
 import { Overview } from '../modules/overview.js'
 import { Mining } from '../modules/mining.js'
 import { Header } from '../modules/header.js'
 
-function main() {
+async function main() {
   const env = 'test'
-  const network = config.networks[env]
-  const realDAO = new RealDAOHelper({
+  const config = await getConfig(env)
+  console.log('config:', config)
+  const realDAO = new RealDAOService({
     Web3,
     env,
-    config: network,
+    network: config.network,
+  })
+  const wallet = new WalletService()
+
+  await realDAO.initialize()
+  await wallet.initialize()
+
+  const service = { realDAO, wallet }
+  const options = { config, service }
+  const header = new Header(options)
+  const overview = new Overview(options)
+  const mining = new Mining(options)
+
+  header.onAccountChanged((account) => {
+    mining.setLoginAccount(account)
+    overview.setLoginAccount(account)
   })
 
-  async function init() {
-    await realDAO.loadOrchestrator()
+  overview.onOverviewLoaded((overview) => {
+    header.setOverviewData(overview)
+  })
 
-    const minRefreshInterval = 10000
-    const header = new Header({ config: network })
-    const overview = new Overview({ realDAO, minRefreshInterval })
-    const mining = new Mining({ realDAO, minRefreshInterval })
-
-    header.onAccountChanged((account) => {
-      mining.setLoginAccount(account)
-      overview.setLoginAccount(account)
-    })
-
-    overview.onOverviewLoaded((overview) => {
-      header.setOverviewData(overview)
-    })
-
-    header.run()
-    overview.run()
-    mining.run()
-  }
-
-  init()
+  header.run()
+  overview.run()
+  mining.run()
 }
 
 window.onload = main

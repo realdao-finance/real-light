@@ -1,5 +1,8 @@
 export class Mining {
   constructor(options) {
+    this.config = options.config
+    this.service = options.service
+
     this.vm = new Vue({
       el: '#mining',
       data: {
@@ -12,7 +15,6 @@ export class Mining {
       computed: {},
     })
     this.lastRefreshTime = 0
-    this.options = options
   }
 
   setLoginAccount(account) {
@@ -28,16 +30,16 @@ export class Mining {
 
     // This is to wait for loginAccount
     setTimeout(refresh, 1000)
-    setInterval(refresh, this.options.minRefreshInterval)
+    setInterval(refresh, this.config.refreshInterval)
   }
 
   async _refresh() {
-    if (Date.now() - this.lastRefreshTime < this.options.minRefreshInterval) {
+    if (Date.now() - this.lastRefreshTime < this.config.refreshInterval) {
       return
     }
     this.lastRefreshTime = Date.now()
 
-    const realDAO = this.options.realDAO
+    const realDAO = this.service.realDAO
     console.log('loginAccount:', this.vm.loginAccount)
     const miningInfo = await realDAO.getPools(this.vm.loginAccount)
     console.log('miningInfo:', miningInfo)

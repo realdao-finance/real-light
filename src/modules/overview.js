@@ -4,6 +4,9 @@ const OVERVIEW_LOADED_EVENT = 'overviewLoaded'
 
 export class Overview {
   constructor(options) {
+    this.config = options.config
+    this.service = options.service
+
     this.vm = new Vue({
       el: '#overview',
       data: {
@@ -16,14 +19,13 @@ export class Overview {
     this.lastRefreshOverViewTime = 0
     this.lastRefreshBalancesTime = 0
     this.ep = new EventProxy()
-    this.options = options
   }
 
   async run() {
     const refresh = this._refresh.bind(this)
 
     refresh()
-    setInterval(refresh, this.options.minRefreshInterval)
+    setInterval(refresh, this.config.refreshInterval)
   }
 
   onOverviewLoaded(handler) {
@@ -44,11 +46,11 @@ export class Overview {
   }
 
   async _refreshOverview() {
-    if (Date.now() - this.lastRefreshOverViewTime < this.options.minRefreshInterval) {
+    if (Date.now() - this.lastRefreshOverViewTime < this.config.refreshInterval) {
       return
     }
     this.lastRefreshOverViewTime = Date.now()
-    const realDAO = this.options.realDAO
+    const realDAO = this.service.realDAO
     const overview = await realDAO.getOverview()
     console.log('overview:', overview)
     this.vm.markets = overview.markets
@@ -58,12 +60,12 @@ export class Overview {
 
   async _refreshBalances() {
     if (!this.vm.loginAccount) return
-    if (Date.now() - this.lastRefreshBalancesTime < this.options.minRefreshInterval) {
+    if (Date.now() - this.lastRefreshBalancesTime < this.config.refreshInterval) {
       return
     }
     this.lastRefreshBalancesTime = Date.now()
     console.log('refreshBalances:', this.vm.loginAccount)
-    const realDAO = this.options.realDAO
+    const realDAO = this.service.realDAO
     const result = await realDAO.getAccountBalances(this.vm.loginAccount)
     console.log('getAccountBalances:', result)
     const balances = {}
