@@ -1,4 +1,4 @@
-import { parseBasename } from './parser.js'
+import { parseBasename } from './utils.js'
 
 export async function loadServices(files, options) {
   const service = {}

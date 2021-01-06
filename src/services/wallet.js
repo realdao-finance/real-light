@@ -1,6 +1,11 @@
 export default class WalletService {
   async initialize() {}
 
+  currentProvider() {
+    console.log('currentProvider:', window.ethereum)
+    return window.ethereum
+  }
+
   isInstalled() {
     return !!window.ethereum
   }

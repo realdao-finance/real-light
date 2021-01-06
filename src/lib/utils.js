@@ -13,3 +13,8 @@ export function parseBasename(str) {
   const filename = parts[parts.length - 1]
   return filename.split('.')[0]
 }
+
+export function literalToReal(val, decimals) {
+  const real = Number(val) * 10 ** Number(decimals)
+  return real.toString()
+}

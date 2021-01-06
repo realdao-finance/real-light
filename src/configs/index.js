@@ -1,4 +1,4 @@
-import { parseQuery } from '../lib/parser.js'
+import { parseQuery } from '../lib/utils.js'
 
 export async function getConfig(env) {
   if (!env) {

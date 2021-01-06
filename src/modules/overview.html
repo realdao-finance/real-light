@@ -51,9 +51,9 @@
                 <form class="pure-form box">
                     <fieldset>
                         <legend>Supply {{ selectedSymbol }}</legend>
-                        <input placeholder="Amount" /><br />
-                        <button v-show="needApprove" class="pure-button">Approve</button>
-                        <button class="pure-button">Supply</button>
+                        <input v-model="inputSupplyAmount" placeholder="Amount" /><br />
+                        <button v-show="needApprove" v-on:click.prevent="doApprove" class="pure-button">Approve</button>
+                        <button v-on:click.prevent="doSupply" class="pure-button">Supply</button>
                     </fieldset>
                 </form>
             </div>
@@ -61,8 +61,8 @@
                 <form class="pure-form box">
                     <fieldset>
                         <legend>Borrow {{ selectedSymbol }}</legend>
-                        <input placeholder="Amount" /><br />
-                        <button class="pure-button">Borrow</button>
+                        <input v-model="inputBorrowAmount" placeholder="Amount" /><br />
+                        <button v-on:click.prevent="doBorrow" class="pure-button">Borrow</button>
                     </fieldset>
                 </form>
             </div>
@@ -70,8 +70,8 @@
                 <form class="pure-form box">
                     <fieldset>
                         <legend>Redeem {{ selectedSymbol }}</legend>
-                        <input placeholder="Amount" />
-                        <button class="pure-button">Redeem</button>
+                        <input v-model="inputRedeemAmount" placeholder="Amount" />
+                        <button v-on:click.prevent="doRedeem" class="pure-button">Redeem</button>
                     </fieldset>
                 </form>
             </div>
@@ -79,9 +79,9 @@
                 <form class="pure-form box">
                     <fieldset>
                         <legend>Repay {{ selectedSymbol }}</legend>
-                        <input placeholder="Amount" />
-                        <button v-show="needApprove" class="pure-button">Approve</button>
-                        <button class="pure-button">Repay</button>
+                        <input v-model="inputRepayAmount" placeholder="Amount" />
+                        <button v-show="needApprove" v-on:click.prevent="doApprove" class="pure-button">Approve</button>
+                        <button v-on:click.prevent="doRepay" class="pure-button">Repay</button>
                     </fieldset>
                 </form>
             </div>

@@ -111,6 +111,10 @@ export default class Header {
         console.log('selectAccount:', account)
         if (account) {
           this.vm.loginAccount = account
+
+          const provider = this.service.wallet.currentProvider()
+          this.service.realdao.setProvider(provider)
+          this.service.realdao.initialize()
           this.eb.emit(ACCOUNT_CHANGE_EVENT, account)
         } else {
           this._showWalletButton('Login')

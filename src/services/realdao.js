@@ -5,6 +5,7 @@ const RDS_POINT = 1e8
 const INITIAL_REWARD = 4
 const BLOCKS_PER_YEAR = 2102400
 const INITIAL_SUPPLY = 4200000
+const MAX_UINT256 = '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'
 
 export default class RealDAOService extends RealDAO {
   constructor(options) {
@@ -96,11 +97,15 @@ export default class RealDAOService extends RealDAO {
     return this.distributor(true).options.address
   }
 
-  async needApprove(underlyingAddr, marketAddr, account) {
+  async needApprove(underlyingAddr, spender, account) {
     const contract = this.getErc20Token(underlyingAddr)
-    const allowance = await contract.allowance(account, marketAddr).call()
-    console.log('allowance:', allowance)
+    const allowance = await contract.allowance(account, spender).call()
     return BigInt(allowance) < BigInt(Number.MAX_SAFE_INTEGER)
+  }
+
+  async approve(underlyingAddr, spender, owner) {
+    const contract = this.getErc20Token(underlyingAddr)
+    await contract.approve(spender, MAX_UINT256).send({ from: owner })
   }
 
   async getRTokenBalances(rToken, account) {

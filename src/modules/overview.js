@@ -1,3 +1,5 @@
+import { literalToReal } from '../lib/utils.js'
+
 const OVERVIEW_LOADED_EVENT = 'overviewLoaded'
 
 export default class Overview {
@@ -16,10 +18,19 @@ export default class Overview {
         selectedIndex: 0,
         selectedSymbol: '...',
         needApprove: false,
+        inputSupplyAmount: '0',
+        inputBorrowAmount: '0',
+        inputRedeemAmount: '0',
+        inputRepayAmount: '0',
       },
       computed: {},
       methods: {
         selectMarket: this.selectMarket.bind(this),
+        doSupply: this.doSupply.bind(this),
+        doBorrow: this.doBorrow.bind(this),
+        doRedeem: this.doRedeem.bind(this),
+        doRepay: this.doRepay.bind(this),
+        doApprove: this.doApprove.bind(this),
       },
     })
     this.lastRefreshOverViewTime = 0
@@ -51,6 +62,88 @@ export default class Overview {
     }
     this.vm.selectedIndex = index
     this._checkAllowance()
+  }
+
+  async doSupply() {
+    if (!this.vm.loginAccount) return
+    const market = this.vm.markets[this.vm.selectedIndex]
+    if (!market) return
+
+    const inputAmount = Number(this.vm.inputSupplyAmount)
+    if (Number.isNaN(inputAmount) || inputAmount <= 0) return
+
+    const { underlyingDecimals, underlyingSymbol } = market
+    const realAmount = literalToReal(inputAmount, underlyingDecimals)
+
+    await this.service.realdao.loadRTokens()
+    const contract = this.service.realdao.rToken(underlyingSymbol)
+    if (underlyingSymbol === 'ETH') {
+      await contract.mint().send({ value: realAmount, from: this.vm.loginAccount })
+    } else {
+      await contract.mint(realAmount).send({ from: this.vm.loginAccount })
+    }
+  }
+
+  async doBorrow() {
+    if (!this.vm.loginAccount) return
+    const market = this.vm.markets[this.vm.selectedIndex]
+    if (!market) return
+
+    const inputAmount = Number(this.vm.inputBorrowAmount)
+    if (Number.isNaN(inputAmount) || inputAmount <= 0) return
+
+    const { underlyingDecimals, underlyingSymbol } = market
+    const realAmount = literalToReal(inputAmount, underlyingDecimals)
+
+    await this.service.realdao.loadRTokens()
+    const contract = this.service.realdao.rToken(underlyingSymbol)
+    await contract.borrow(realAmount).send({ from: this.vm.loginAccount })
+  }
+
+  async doRedeem() {
+    if (!this.vm.loginAccount) return
+    const market = this.vm.markets[this.vm.selectedIndex]
+    if (!market) return
+
+    const inputAmount = Number(this.vm.inputRedeemAmount)
+    if (Number.isNaN(inputAmount) || inputAmount <= 0) return
+
+    const { underlyingSymbol } = market
+    const rTokenDecimals = 8
+    const realAmount = literalToReal(inputAmount, rTokenDecimals)
+
+    await this.service.realdao.loadRTokens()
+    const contract = this.service.realdao.rToken(underlyingSymbol)
+    await contract.redeem(realAmount).send({ from: this.vm.loginAccount })
+  }
+
+  async doRepay() {
+    if (!this.vm.loginAccount) return
+    const market = this.vm.markets[this.vm.selectedIndex]
+    if (!market) return
+
+    const inputAmount = Number(this.vm.inputRepayAmount)
+    if (Number.isNaN(inputAmount) || inputAmount <= 0) return
+
+    const { underlyingDecimals, underlyingSymbol } = market
+    const realAmount = literalToReal(inputAmount, underlyingDecimals)
+
+    await this.service.realdao.loadRTokens()
+    const contract = this.service.realdao.rToken(underlyingSymbol)
+    if (underlyingSymbol === 'ETH') {
+      await contract.repayBorrow().send({ value: realAmount, from: this.vm.loginAccount })
+    } else {
+      await contract.repayBorrow(realAmount).send({ from: this.vm.loginAccount })
+    }
+  }
+
+  async doApprove() {
+    if (!this.vm.loginAccount) return
+    const market = this.vm.markets[this.vm.selectedIndex]
+    if (!market) return
+
+    const { underlyingAssetAddress, rToken } = market
+    await this.service.realdao.approve(underlyingAssetAddress, rToken, this.vm.loginAccount)
   }
 
   async _refresh() {
