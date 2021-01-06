@@ -9,13 +9,14 @@ Just clone it and control it, dont be controlled.
 - [x] Modular
 - [x] Livereload
 - [x] Pug
-- [x] Vue(2)
+- [x] Data Binding
+  - [x] Vue2
 - [ ] Router
 - [ ] Boundle
-- [ ] Preprocessing
-  - [ ] Advanced css language
-  - [ ] Typescript 
-  - [ ] JSX
+- [ ] Preprocess
+  - [ ] Less
+  - [ ] Stylus
+  - [ ] Typescript
 
 ## Table of Contents
 
