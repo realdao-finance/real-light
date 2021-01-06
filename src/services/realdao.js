@@ -91,6 +91,18 @@ export default class RealDAOService extends RealDAO {
     }
   }
 
+  async getDistributorAddress() {
+    await this.loadDistributor()
+    return this.distributor(true).options.address
+  }
+
+  async needApprove(underlyingAddr, marketAddr, account) {
+    const contract = this.getErc20Token(underlyingAddr)
+    const allowance = await contract.allowance(account, marketAddr).call()
+    console.log('allowance:', allowance)
+    return BigInt(allowance) < BigInt(Number.MAX_SAFE_INTEGER)
+  }
+
   async getRTokenBalances(rToken, account) {
     await this.loadReporter()
 

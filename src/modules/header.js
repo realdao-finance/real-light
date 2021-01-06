@@ -28,12 +28,12 @@ export default class Header {
         toogleTheme: this.toogleTheme.bind(this),
       },
       computed: {
-        ellipsisAccount: function () {
+        ellipsisAccount() {
           if (!this.loginAccount) return ''
           const len = this.loginAccount.length
           return this.loginAccount.slice(0, 8) + '...' + this.loginAccount.slice(len - 6, len)
         },
-        accountUrl: function () {
+        accountUrl() {
           if (!this.loginAccount) return ''
           return `https://${options.config.network.etherscan}/address/${this.loginAccount}`
         },

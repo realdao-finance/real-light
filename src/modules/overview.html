@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in markets" :key="item.symbol" class="pointer">
+                <tr v-for="(item, index) in markets" :key="item.symbol" v-on:click="selectMarket(index)" class="pointer">
                     <td></td>
                     <td>{{ item.symbol }}</td>
                     <td>{{ item.underlyingSymbol }}</td>
@@ -50,9 +50,9 @@
             <div class="pure-u-1-4">
                 <form class="pure-form box">
                     <fieldset>
-                        <legend>Supply ETH</legend>
+                        <legend>Supply {{ selectedSymbol }}</legend>
                         <input placeholder="Amount" /><br />
-                        <button class="pure-button">Approve</button><br />
+                        <button v-show="needApprove" class="pure-button">Approve</button><br />
                         <button class="pure-button">Supply</button>
                     </fieldset>
                 </form>
@@ -60,7 +60,7 @@
             <div class="pure-u-1-4">
                 <form class="pure-form box">
                     <fieldset>
-                        <legend>Borrow ETH</legend>
+                        <legend>Borrow {{ selectedSymbol }}</legend>
                         <input placeholder="Amount" /><br />
                         <button class="pure-button">Borrow</button>
                     </fieldset>
@@ -69,7 +69,7 @@
             <div class="pure-u-1-4">
                 <form class="pure-form box">
                     <fieldset>
-                        <legend>Redeem</legend>
+                        <legend>Redeem {{ selectedSymbol }}</legend>
                         <input placeholder="Amount" />
                         <button class="pure-button">Redeem</button>
                     </fieldset>
@@ -78,9 +78,9 @@
             <div class="pure-u-1-4">
                 <form class="pure-form box">
                     <fieldset>
-                        <legend>Repay</legend>
+                        <legend>Repay {{ selectedSymbol }}</legend>
                         <input placeholder="Amount" />
-                        <button class="pure-button">Approve</button>
+                        <button v-show="needApprove" class="pure-button">Approve</button>
                         <button class="pure-button">Repay</button>
                     </fieldset>
                 </form>

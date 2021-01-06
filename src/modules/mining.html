@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in pools" :key="item.id" v-bind:class="[item.ptype === 2 ? 'pointer' : '']">
+                <tr v-for="(item, index) in pools" :key="item.id" v-bind:class="[item.ptype === 2 ? 'pointer' : '']" v-on:click="selectPool(index)">
                     <td></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.title }}</td>
@@ -50,9 +50,9 @@
             <div class="pure-u-1-3 box">
                 <form class="pure-form">
                     <fieldset>
-                        <legend>Stake LP Token</legend>
+                        <legend>Stake LP Token ({{ selectedLPToken }})</legend>
                         <input placeholder="Amount" />
-                        <button class="pure-button">Approve</button>
+                        <button v-show="needApprove" class="pure-button">Approve</button>
                         <button class="pure-button">Stake</button>
                     </fieldset>
                 </form>

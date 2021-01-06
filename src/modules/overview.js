@@ -13,6 +13,13 @@ export default class Overview {
         balances: null,
         loginAccount: null,
         loaded: false,
+        selectedIndex: 0,
+        selectedSymbol: '...',
+        needApprove: false,
+      },
+      computed: {},
+      methods: {
+        selectMarket: this.selectMarket.bind(this),
       },
     })
     this.lastRefreshOverViewTime = 0
@@ -38,6 +45,14 @@ export default class Overview {
     }
   }
 
+  selectMarket(index) {
+    if (this.vm.markets.length > 0) {
+      this.vm.selectedSymbol = this.vm.markets[index].underlyingSymbol
+    }
+    this.vm.selectedIndex = index
+    this._checkAllowance()
+  }
+
   async _refresh() {
     this._refreshOverview()
     this._refreshBalances()
@@ -52,6 +67,7 @@ export default class Overview {
     const overview = await realdao.getOverview()
     console.log('overview:', overview)
     this.vm.markets = overview.markets
+    this.selectMarket(this.vm.selectedIndex)
     this.vm.loaded = true
     this.eb.emit(OVERVIEW_LOADED_EVENT, overview)
   }
@@ -72,5 +88,16 @@ export default class Overview {
       balances[symbol] = item
     }
     this.vm.balances = balances
+  }
+
+  async _checkAllowance() {
+    if (this.vm.selectedSymbol === 'ETH' || !this.vm.loginAccount) {
+      this.vm.needApprove = false
+      return
+    }
+    const market = this.vm.markets[this.vm.selectedIndex]
+    const underlyingAddr = market.underlyingAssetAddress
+    const marketAddr = market.rToken
+    this.vm.needApprove = await this.service.realdao.needApprove(underlyingAddr, marketAddr, this.vm.loginAccount)
   }
 }

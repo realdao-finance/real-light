@@ -10,8 +10,13 @@ export default class Mining {
         my: [],
         loginAccount: null,
         loaded: false,
+        selectedIndex: 2,
+        selectedLPToken: '...',
+        needApprove: false,
       },
-      methods: {},
+      methods: {
+        selectPool: this.selectPool.bind(this),
+      },
       computed: {},
     })
     this.lastRefreshTime = 0
@@ -37,6 +42,26 @@ export default class Mining {
     setInterval(refresh, this.config.refreshInterval)
   }
 
+  selectPool(index) {
+    const pool = this.vm.pools[index]
+    if (pool && pool.ptype === 2) {
+      this.vm.selectedLPToken = pool.title
+      this.vm.selectedIndex = index
+      this._checkAllowance()
+    }
+  }
+
+  async _checkAllowance() {
+    const pool = this.vm.pools[this.vm.selectedIndex]
+    if (!pool || !this.vm.loginAccount) {
+      this.vm.needApprove = false
+      return
+    }
+    const tokenAddr = pool.tokenAddr
+    const distributorAddr = await this.service.realdao.getDistributorAddress()
+    this.vm.needApprove = await this.service.realdao.needApprove(tokenAddr, distributorAddr, this.vm.loginAccount)
+  }
+
   async _refresh() {
     if (Date.now() - this.lastRefreshTime < this.config.refreshInterval) {
       return
@@ -50,6 +75,7 @@ export default class Mining {
     this.vm.pools = miningInfo.pools
     this.vm.my = miningInfo.my
 
+    this.selectPool(this.vm.selectedIndex)
     this.vm.loaded = true
   }
 }
