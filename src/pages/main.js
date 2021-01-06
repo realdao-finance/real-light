@@ -1,8 +1,8 @@
 import { RealDAOHelper } from '../lib/realdao-helper.js'
 import config from '../config.js'
-import { Overview } from '../components/overview.js'
-import { Mining } from '../components/mining.js'
-import { Header } from '../components/header.js'
+import { Overview } from '../modules/overview.js'
+import { Mining } from '../modules/mining.js'
+import { Header } from '../modules/header.js'
 const { mode } = window.__pdm__
 
 function main() {
