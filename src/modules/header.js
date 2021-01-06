@@ -22,6 +22,7 @@ export default class Header {
         loginAccount: null,
         theme: 'dark',
         loaded: false,
+        liquidity: 0,
       },
       methods: {
         login: this.login.bind(this),
@@ -36,6 +37,9 @@ export default class Header {
         accountUrl() {
           if (!this.loginAccount) return ''
           return `https://${options.config.network.etherscan}/address/${this.loginAccount}`
+        },
+        accountLiquidity() {
+          return this.liquidity.toFixed(2)
         },
       },
     })
@@ -57,6 +61,10 @@ export default class Header {
     this.service.wallet.onAccountChanged(checkWallet)
     this.service.wallet.onChainChanged(checkWallet)
     checkWallet()
+
+    const refresh = this._refresh.bind(this)
+    setInterval(refresh, this.config.refreshInterval)
+    refresh()
   }
 
   toogleTheme() {
@@ -112,5 +120,12 @@ export default class Header {
         console.log('failed to get account:', err)
         this._showWalletButton('Account Not Found')
       })
+  }
+
+  async _refresh() {
+    if (!this.vm.loginAccount) return
+    const realdao = this.service.realdao
+    const result = await realdao.getAccountLiquidity(this.vm.loginAccount)
+    this.vm.liquidity = result.shortfall < 0 ? result.shortfallLiteral : result.liquidityLiteral
   }
 }
