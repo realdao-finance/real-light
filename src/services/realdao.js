@@ -198,7 +198,7 @@ export default class RealDAOService extends RealDAO {
         if (this.chainId() == 1) {
           baseUrl = 'https://app.uniswap.org/#/add/ETH/'
         } else {
-          baseUrl = 'https://faucet.realdao.finance/#/add/ETH/'
+          baseUrl = 'http://158.247.223.174:4000/#/add/ETH/'
         }
         pool.lpUrl = baseUrl + exchangingTokens.shift()
       }

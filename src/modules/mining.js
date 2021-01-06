@@ -1,3 +1,5 @@
+import { realToLiteral } from '../lib/utils.js'
+
 export default class Mining {
   constructor(options) {
     this.config = options.config
@@ -13,6 +15,7 @@ export default class Mining {
         selectedIndex: 2,
         selectedLPToken: '...',
         needApprove: false,
+        lpBalance: '0',
       },
       methods: {
         selectPool: this.selectPool.bind(this),
@@ -77,5 +80,19 @@ export default class Mining {
 
     this.selectPool(this.vm.selectedIndex)
     this.vm.loaded = true
+
+    this._refreshLPBalance()
+  }
+
+  async _refreshLPBalance() {
+    if (!this.vm.loginAccount) return
+    const pool = this.vm.pools[this.vm.selectedIndex]
+    if (!pool || pool.ptype !== 2) return
+
+    const { tokenAddr } = pool
+    const contract = this.service.realdao.getErc20Token(tokenAddr)
+    const results = await Promise.all([contract.balanceOf(this.vm.loginAccount).call(), contract.decimals().call()])
+    const balance = realToLiteral(results[0], results[1])
+    this.vm.lpBalance = balance
   }
 }

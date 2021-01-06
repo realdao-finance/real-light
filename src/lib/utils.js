@@ -18,3 +18,8 @@ export function literalToReal(val, decimals) {
   const real = Number(val) * 10 ** Number(decimals)
   return real.toString()
 }
+
+export function realToLiteral(real, decimals) {
+  const literal = Number(real) / 10 ** Number(decimals)
+  return literal
+}
