@@ -10,7 +10,7 @@ export default class RealDAOService extends RealDAO {
   constructor(options) {
     const realDAOOptions = {
       Web3,
-      networks: RealDAO.Networks[options.config.env],
+      network: RealDAO.Networks[options.config.env],
       provider: options.config.network.provider,
       supremeAddress: options.config.network.supremeAddress,
     }
