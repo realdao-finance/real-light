@@ -1,5 +1,6 @@
 import * as wallet from '../lib/wallet.js'
 import { EventProxy } from '../lib/event-proxy.js'
+const { mode } = window.__pdm__
 
 const ACCOUNT_CHANGE_EVENT = 'accountChanged'
 
@@ -40,7 +41,8 @@ export class Header {
     this.options = options
 
     this.ep = new EventProxy()
-    this.options.mode.set('light')
+    this.mode = mode
+    this.mode.set('light')
   }
 
   onAccountChanged(handler) {
@@ -59,7 +61,7 @@ export class Header {
 
   toogleTheme() {
     const newTheme = this.vm.theme === 'dark' ? 'light' : 'dark'
-    this.options.mode.set(this.vm.theme)
+    this.mode.set(this.vm.theme)
     this.vm.theme = newTheme
   }
 

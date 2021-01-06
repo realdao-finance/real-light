@@ -3,7 +3,6 @@ import config from '../config.js'
 import { Overview } from '../modules/overview.js'
 import { Mining } from '../modules/mining.js'
 import { Header } from '../modules/header.js'
-const { mode } = window.__pdm__
 
 function main() {
   const env = 'test'
@@ -18,10 +17,9 @@ function main() {
     await realDAO.loadOrchestrator()
 
     const minRefreshInterval = 10000
-    const header = new Header({ config: network, mode })
+    const header = new Header({ config: network })
     const overview = new Overview({ realDAO, minRefreshInterval })
     const mining = new Mining({ realDAO, minRefreshInterval })
-    // const unsubscribe = mode.subscribe((v) => console.log(v, '==========='))
 
     header.onAccountChanged((account) => {
       mining.setLoginAccount(account)
