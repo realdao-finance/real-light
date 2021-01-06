@@ -1,6 +1,6 @@
 # Real Fast
 
-It's not only a web app, but also a lightweight web app framework.
+It's not only a defi app, but also a lightweight web app framework.
 
 Just clone it and control it, dont be controlled.
 
