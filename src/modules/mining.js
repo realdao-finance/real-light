@@ -1,8 +1,8 @@
-export class Mining {
+export default class Mining {
   constructor(options) {
     this.config = options.config
     this.service = options.service
-
+    this.eb = options.eb
     this.vm = new Vue({
       el: '#mining',
       data: {
@@ -17,6 +17,10 @@ export class Mining {
     this.lastRefreshTime = 0
   }
 
+  async initialize() {
+    this.eb.on('accountChanged', this.setLoginAccount.bind(this))
+  }
+
   setLoginAccount(account) {
     const old = this.vm.loginAccount
     this.vm.loginAccount = account
@@ -25,7 +29,7 @@ export class Mining {
     }
   }
 
-  async run() {
+  run() {
     const refresh = this._refresh.bind(this)
 
     // This is to wait for loginAccount
@@ -39,9 +43,9 @@ export class Mining {
     }
     this.lastRefreshTime = Date.now()
 
-    const realDAO = this.service.realDAO
+    const realdao = this.service.realdao
     console.log('loginAccount:', this.vm.loginAccount)
-    const miningInfo = await realDAO.getPools(this.vm.loginAccount)
+    const miningInfo = await realdao.getPools(this.vm.loginAccount)
     console.log('miningInfo:', miningInfo)
     this.vm.pools = miningInfo.pools
     this.vm.my = miningInfo.my

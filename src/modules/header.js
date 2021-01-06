@@ -1,12 +1,11 @@
-import { EventProxy } from '../lib/event-proxy.js'
 const { mode } = window.__pdm__
-
 const ACCOUNT_CHANGE_EVENT = 'accountChanged'
 
-export class Header {
+export default class Header {
   constructor(options) {
     this.config = options.config
     this.service = options.service
+    this.eb = options.eb
 
     this.vm = new Vue({
       el: '#header',
@@ -40,13 +39,12 @@ export class Header {
         },
       },
     })
-    this.ep = new EventProxy()
     this.mode = mode
     this.mode.set('light')
   }
 
-  onAccountChanged(handler) {
-    this.ep.on(ACCOUNT_CHANGE_EVENT, handler)
+  async initialize() {
+    this.eb.on('overviewLoaded', this.setOverviewData.bind(this))
   }
 
   setOverviewData(overview) {
@@ -54,7 +52,7 @@ export class Header {
     this.vm.loaded = true
   }
 
-  async run() {
+  run() {
     const checkWallet = this._checkWallet.bind(this)
     this.service.wallet.onAccountChanged(checkWallet)
     this.service.wallet.onChainChanged(checkWallet)
@@ -105,7 +103,7 @@ export class Header {
         console.log('selectAccount:', account)
         if (account) {
           this.vm.loginAccount = account
-          this.ep.emit(ACCOUNT_CHANGE_EVENT, account)
+          this.eb.emit(ACCOUNT_CHANGE_EVENT, account)
         } else {
           this._showWalletButton('Login')
         }

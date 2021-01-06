@@ -1,4 +1,4 @@
-export class EventProxy {
+export class EventEmitter {
   constructor() {
     this.listeners = new Map()
   }

@@ -1,4 +1,4 @@
-export class WalletService {
+export default class WalletService {
   async initialize() {}
 
   isInstalled() {
