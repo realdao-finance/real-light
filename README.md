@@ -4,9 +4,23 @@ It's not only a web app, but also a lightweight web app framework.
 
 Just clone it and control it, dont be controlled.
 
+## Features
+
+- [x] Modular
+- [x] Livereload
+- [x] Pug
+- [x] Vue(2)
+- [ ] Router
+- [ ] Boundle
+- [ ] Preprocessing
+  - [ ] Advanced css language
+  - [ ] Typescript 
+  - [ ] JSX
+
 ## Table of Contents
 
 - [Real Fast](#real-fast)
+  - [Features](#features)
   - [Table of Contents](#table-of-contents)
   - [Develop](#develop)
   - [Release](#release)
