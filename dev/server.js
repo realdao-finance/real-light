@@ -44,8 +44,8 @@ function main() {
   app.set('view engine', 'pug')
   app.set('views', path.join(srcDir, 'pages'))
 
-  app.get('/', (_, res) => {
-    res.render('main', {})
+  app.get('/:page', (req, res) => {
+    res.render(req.params.page || 'main', {})
   })
 
   debug('starting server')
