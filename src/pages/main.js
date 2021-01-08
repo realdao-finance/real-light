@@ -11,6 +11,7 @@ async function main() {
   const eb = new EventEmitter()
   const options = { config, service, eb }
   await loadModules(['../modules/header.js', '../modules/overview.js', '../modules/mining.js'], options)
+  M.AutoInit();
 }
 
 window.onload = main

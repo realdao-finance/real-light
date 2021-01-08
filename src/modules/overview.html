@@ -2,7 +2,7 @@
     <div v-if="!loaded">Loading...</div>
     <template v-else>
         <h3>Markets</h3>
-        <table class="pure-table pure-table-bordered">
+        <table class="highlight">
             <thead>
                 <tr>
                     <th>#</th>
@@ -46,45 +46,54 @@
                 </tr>
             </tbody>
         </table>
-        <div class="pure-g">
-            <div class="pure-u-1-4">
-                <form class="pure-form box">
-                    <fieldset>
-                        <legend>Supply {{ selectedSymbol }}</legend>
-                        <input v-model="inputSupplyAmount" placeholder="Amount" /><br />
-                        <button v-show="needApprove" v-on:click.prevent="doApprove" class="pure-button">Approve</button>
-                        <button v-on:click.prevent="doSupply" class="pure-button">Supply</button>
-                    </fieldset>
-                </form>
-            </div>
-            <div class="pure-u-1-4">
-                <form class="pure-form box">
-                    <fieldset>
-                        <legend>Borrow {{ selectedSymbol }}</legend>
-                        <input v-model="inputBorrowAmount" placeholder="Amount" /><br />
-                        <button v-on:click.prevent="doBorrow" class="pure-button">Borrow</button>
-                    </fieldset>
-                </form>
-            </div>
-            <div class="pure-u-1-4">
-                <form class="pure-form box">
-                    <fieldset>
-                        <legend>Redeem {{ selectedSymbol }}</legend>
-                        <input v-model="inputRedeemAmount" placeholder="Amount" />
-                        <button v-on:click.prevent="doRedeem" class="pure-button">Redeem</button>
-                    </fieldset>
-                </form>
-            </div>
-            <div class="pure-u-1-4">
-                <form class="pure-form box">
-                    <fieldset>
-                        <legend>Repay {{ selectedSymbol }}</legend>
-                        <input v-model="inputRepayAmount" placeholder="Amount" />
-                        <button v-show="needApprove" v-on:click.prevent="doApprove" class="pure-button">Approve</button>
-                        <button v-on:click.prevent="doRepay" class="pure-button">Repay</button>
-                    </fieldset>
-                </form>
-            </div>
+        <div class="blank"></div>
+        <div class="row ">
+                <div class="col s12">
+                  <ul id="tabs" class="tabs">
+                    <li class="tab col s3"><a href="#supply" >Supply</a></li>
+                    <li class="tab col s3"><a href="#borrow">Borrow</a></li>
+                    <li class="tab col s3 "><a href="#redeem">Redeem</a></li>
+                    <li class="tab col s3"><a href="#repay">Repay</a></li>
+                  </ul>
+                </div>
+                <div id="supply" class="col s12">
+                    <form class="form">
+                        <fieldset>
+                            <legend>Supply {{ selectedSymbol }}</legend>
+                            <input v-model="inputSupplyAmount" placeholder="Amount" /><br />
+                            <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text">Approve</button>
+                            <button v-on:click.prevent="doSupply" class="btn btn-flat btn-small deep-purple accent-3 white-text">Supply</button>
+                        </fieldset>
+                    </form>
+                </div>
+                <div id="borrow" class="col s12">
+                    <form class="form">
+                        <fieldset>
+                            <legend>Borrow {{ selectedSymbol }}</legend>
+                            <input v-model="inputBorrowAmount" placeholder="Amount" /><br />
+                            <button v-on:click.prevent="doBorrow" class="btn btn-flat btn-small deep-purple accent-3 white-text">Borrow</button>
+                        </fieldset>
+                    </form>
+                </div>
+                <div id="redeem" class="col s12">
+                    <form class="form">
+                        <fieldset>
+                            <legend>Redeem {{ selectedSymbol }}</legend>
+                            <input v-model="inputRedeemAmount" placeholder="Amount" />
+                            <button v-on:click.prevent="doRedeem" class="btn btn-flat btn-small deep-purple accent-3 white-text">Redeem</button>
+                        </fieldset>
+                    </form>
+                </div>
+                <div id="repay" class="col s12">
+                    <form class="form">
+                        <fieldset>
+                            <legend>Repay {{ selectedSymbol }}</legend>
+                            <input v-model="inputRepayAmount" placeholder="Amount" />
+                            <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text">Approve</button>
+                            <button v-on:click.prevent="doRepay" class="btn btn-flat btn-small deep-purple accent-3 white-text">Repay</button>
+                        </fieldset>
+                    </form>
+                </div> 
         </div>
     </template>
     <hr />

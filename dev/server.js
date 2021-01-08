@@ -44,7 +44,7 @@ function main() {
   app.set('view engine', 'pug')
   app.set('views', path.join(srcDir, 'pages'))
 
-  app.get('/main', (_, res) => {
+  app.get('/', (_, res) => {
     res.render('main', {})
   })
 

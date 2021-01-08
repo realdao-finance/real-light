@@ -43,9 +43,13 @@ export default class Overview {
 
   run() {
     const refresh = this._refresh.bind(this)
-
     refresh()
     setInterval(refresh, this.config.refreshInterval)
+    // init tabs
+    setTimeout(()=>{
+      let tabs = document.getElementById('tabs')
+      M.Tabs.init(tabs, {});
+    }, 2000)
   }
 
   setLoginAccount(account) {

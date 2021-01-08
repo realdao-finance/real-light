@@ -78,3 +78,36 @@ table {
   color: var(--color);
   background: var(--background);
 }
+
+/* */
+
+.title-stats{
+  margin-bottom: 0px !important;
+}
+
+.title-opts {
+  margin-top: 5px;
+}
+
+.blank {
+  margin: 20px 0;
+}
+
+.form {
+  height: 200px;
+  margin: 10px 1px 0 1px;
+  text-align: center;
+}
+
+/* override */
+.tabs .tab a { 
+  color: #641fff !important;
+}
+
+.tabs .indicator {
+  background-color: #641fff !important;
+}
+
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+  background-color: rgba(100, 31, 255, 0.2) !important;
+}
