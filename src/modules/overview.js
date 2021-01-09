@@ -22,6 +22,7 @@ export default class Overview {
         inputBorrowAmount: '0',
         inputRedeemAmount: '0',
         inputRepayAmount: '0',
+        tabs: null
       },
       computed: {},
       methods: {
@@ -33,10 +34,13 @@ export default class Overview {
         doApprove: this.doApprove.bind(this),
       },
       mounted(){
-        setTimeout(()=>{
-          let tabs = document.getElementById('tabs')
-          M.Tabs.init(tabs, {});
-        }, 2000)
+        // setTimeout(()=>{
+        //   let tabs = document.getElementById('tabs')
+        //   M.Tabs.init(tabs, {});
+        // }, 2000)
+        // this.$nextTick(() => {
+        //    this.initTabs()
+        // })
       }
     })
     this.lastRefreshOverViewTime = 0
@@ -169,6 +173,17 @@ export default class Overview {
     this.selectMarket(this.vm.selectedIndex)
     this.vm.loaded = true
     this.eb.emit(OVERVIEW_LOADED_EVENT, overview)
+    if(!this.vm.tabs){
+      setTimeout(() => {
+        this.initTabs()
+      }, 1);
+    }
+  }
+
+   initTabs() {
+    let tabs = document.getElementById('tabs')
+    let tabInstance = M.Tabs.init(tabs, {});
+    this.vm.tabs = tabInstance
   }
 
   async _refreshBalances() {
