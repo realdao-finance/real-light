@@ -103,6 +103,7 @@ export default class Header {
       return this._showWalletButton('Login')
     }
     if (wallet.getChainId() !== this.config.network.chainId) {
+      M.toast({html: 'Wrong Network!', classes: 'rounded'});
       return this._showWalletButton('Wrong Network')
     }
     wallet
@@ -121,7 +122,8 @@ export default class Header {
         }
       })
       .catch((err) => {
-        console.log('failed to get account:', err)
+        // console.log('failed to get account:', err)
+        M.toast({html: 'Failed to get account', classes: 'rounded'});
         this._showWalletButton('Account Not Found')
       })
   }

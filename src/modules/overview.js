@@ -32,6 +32,12 @@ export default class Overview {
         doRepay: this.doRepay.bind(this),
         doApprove: this.doApprove.bind(this),
       },
+      mounted(){
+        setTimeout(()=>{
+          let tabs = document.getElementById('tabs')
+          M.Tabs.init(tabs, {});
+        }, 2000)
+      }
     })
     this.lastRefreshOverViewTime = 0
     this.lastRefreshBalancesTime = 0
@@ -45,11 +51,7 @@ export default class Overview {
     const refresh = this._refresh.bind(this)
     refresh()
     setInterval(refresh, this.config.refreshInterval)
-    // init tabs
-    setTimeout(()=>{
-      let tabs = document.getElementById('tabs')
-      M.Tabs.init(tabs, {});
-    }, 2000)
+     
   }
 
   setLoginAccount(account) {

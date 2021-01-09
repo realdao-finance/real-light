@@ -43,7 +43,7 @@ function main() {
   app.use(tinylr.middleware({ app }))
   app.set('view engine', 'pug')
   app.set('views', path.join(srcDir, 'pages'))
-
+  
   app.get('/:page', (req, res) => {
     res.render(req.params.page || 'main', {})
   })

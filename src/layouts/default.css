@@ -18,10 +18,16 @@
 }
 
 .button-xsmall {
-  font-size: 70%;
+  font-size: 10px;
   border-radius: 10px;
+  background-color: #641fff;
+  color: white;
+  
 }
 
+.button-xsmall:hover, .button-xsmall:focus {
+  background-color: #9876e7;
+}
 form {
   padding: 0 40px 0 40px;
 }
@@ -29,6 +35,10 @@ form {
 form input {
   width: 100%;
   margin: 0 0px 10px 0px;
+}
+
+form input:focus {
+  border-bottom-color: #641fff !important;
 }
 
 form button {
@@ -111,3 +121,4 @@ table {
 .tabs .tab a:focus, .tabs .tab a:focus.active {
   background-color: rgba(100, 31, 255, 0.2) !important;
 }
+
