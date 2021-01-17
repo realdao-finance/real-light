@@ -11,9 +11,9 @@ export default class RealDAOService extends RealDAO {
   constructor(options) {
     const realDAOOptions = {
       Web3,
-      network: RealDAO.Networks[options.config.env],
-      provider: options.config.network.provider,
-      supremeAddress: options.config.network.supremeAddress,
+      env: options.config.env,
+      provider: options.config.provider,
+      orchestrator: options.config.orchestrator,
     }
     super(realDAOOptions)
     this.config = options.config
@@ -22,9 +22,7 @@ export default class RealDAOService extends RealDAO {
     this._lastRDSPrice = 1
   }
 
-  async initialize() {
-    await this.loadOrchestrator()
-  }
+  async initialize() {}
 
   async getOverview() {
     await this.loadReporter()
@@ -98,13 +96,13 @@ export default class RealDAOService extends RealDAO {
   }
 
   async needApprove(underlyingAddr, spender, account) {
-    const contract = this.getErc20Token(underlyingAddr)
+    const contract = this.erc20Token(underlyingAddr)
     const allowance = await contract.allowance(account, spender).call()
     return BigInt(allowance) < BigInt(Number.MAX_SAFE_INTEGER)
   }
 
   async approve(underlyingAddr, spender, owner) {
-    const contract = this.getErc20Token(underlyingAddr)
+    const contract = this.erc20Token(underlyingAddr)
     await contract.approve(spender, MAX_UINT256).send({ from: owner })
   }
 

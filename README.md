@@ -1,4 +1,4 @@
-# Real Fast
+# Real Light
 
 It's not only a defi app, but also a lightweight web app framework.
 
@@ -20,7 +20,7 @@ Just clone it and control it, dont be controlled.
 
 ## Table of Contents
 
-- [Real Fast](#real-fast)
+- [Real Light](#real-light)
   - [Features](#features)
   - [Table of Contents](#table-of-contents)
   - [Develop](#develop)

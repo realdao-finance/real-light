@@ -90,7 +90,7 @@ export default class Mining {
     if (!pool || pool.ptype !== 2) return
 
     const { tokenAddr } = pool
-    const contract = this.service.realdao.getErc20Token(tokenAddr)
+    const contract = this.service.realdao.erc20Token(tokenAddr)
     const results = await Promise.all([contract.balanceOf(this.vm.loginAccount).call(), contract.decimals().call()])
     const balance = realToLiteral(results[0], results[1])
     this.vm.lpBalance = balance

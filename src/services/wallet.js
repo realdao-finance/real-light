@@ -25,7 +25,7 @@ export default class WalletService {
   }
 
   getChainId() {
-    return window.ethereum.chainId
+    return Number(window.ethereum.chainId)
   }
 
   onAccountChanged(handler) {
