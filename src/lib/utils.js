@@ -19,7 +19,16 @@ export function literalToReal(val, decimals) {
   return real.toString()
 }
 
-export function realToLiteral(real, decimals) {
-  const literal = Number(real) / 10 ** Number(decimals)
+export function realToLiteral(val, decimals) {
+  const literal = Number(val) / 10 ** Number(decimals)
   return literal
+}
+
+export function toFixed(val, num) {
+  return Number(val).toFixed(num)
+}
+
+export function toFixedPercent(val, num) {
+  const fixed = (Number(val) * 100).toFixed(num)
+  return `${fixed}%`
 }

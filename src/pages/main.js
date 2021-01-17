@@ -1,6 +1,7 @@
 import { EventEmitter } from '../lib/event-emitter.js'
 import { loadServices, loadModules } from '../lib/loader.js'
 import { createLogger } from '../lib/logger.js'
+import { toFixed, toFixedPercent } from '../lib/utils.js'
 import { getConfig } from '../configs/index.js'
 
 // prettier-ignore
@@ -22,10 +23,17 @@ async function main() {
 
   logger.debug('config:', config)
 
+  Vue.filter('toFixed', toFixed)
+  Vue.filter('toFixedPercent', toFixedPercent)
+
   const service = await loadServices(serviceFiles, { config })
   const eb = new EventEmitter()
   const options = { config, service, eb }
-  await loadModules(moduleFiles, options)
+
+  const modules = await loadModules(moduleFiles, options)
+  for (const mod of modules) {
+    mod.run()
+  }
   M.AutoInit()
 }
 

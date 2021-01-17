@@ -29,19 +29,19 @@
                     <td></td>
                     <td>{{ item.symbol }}</td>
                     <td>{{ item.underlyingSymbol }}</td>
-                    <td>{{ item.supplyRatePerYear }}</td>
-                    <td>{{ item.borrowRatePerYear }}</td>
-                    <td>{{ item.totalCashLiteral }}</td>
-                    <td>{{ item.totalBorrowsLiteral }}</td>
-                    <td>{{ item.totalReservesLiteral }}</td>
+                    <td>{{ item.supplyRatePerYear | toFixedPercent(4) }}</td>
+                    <td>{{ item.borrowRatePerYear | toFixedPercent(4) }}</td>
+                    <td>{{ item.totalCashLiteral | toFixed(2) }}</td>
+                    <td>{{ item.totalBorrowsLiteral | toFixed(2) }}</td>
+                    <td>{{ item.totalReservesLiteral | toFixed(2) }}</td>
                     <!-- <td>{{ item.exchangeRateLiteral }}</td>
                     <td>{{ item.reserveFactorLiteral }}</td>
                     <td>{{ item.collateralFactorLiteral }}</td>
                     <td>{{ item.liquidationIncentiveLiteral }}</td> -->
                     <template v-if="balances !== null">
-                        <td>{{ balances[item.symbol].tokenBalanceLiteral }}</td>
-                        <td>{{ balances[item.symbol].collateralBalanceLiteral }}</td>
-                        <td>{{ balances[item.symbol].borrowBalanceLiteral }}</td>
+                        <td>{{ balances[item.symbol].tokenBalanceLiteral  | toFixed(2) }}</td>
+                        <td>{{ balances[item.symbol].collateralBalanceLiteral | toFixed(2) }}</td>
+                        <td>{{ balances[item.symbol].borrowBalanceLiteral | toFixed(2) }}</td>
                     </template>
                 </tr>
             </tbody>

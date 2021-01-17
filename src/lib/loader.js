@@ -20,8 +20,5 @@ export async function loadModules(files, options) {
     await instance.initialize()
     modules.push(instance)
   }
-  for (const mod of modules) {
-    mod.run()
-  }
   return modules
 }
