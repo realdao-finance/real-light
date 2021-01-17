@@ -7,11 +7,10 @@ async function main() {
   console.log('config:', config)
 
   const service = await loadServices(['../services/realdao.js', '../services/wallet.js'], { config })
-
   const eb = new EventEmitter()
   const options = { config, service, eb }
   await loadModules(['../modules/header.js', '../modules/overview.js', '../modules/mining.js'], options)
-  M.AutoInit();
+  M.AutoInit()
 }
 
 window.onload = main

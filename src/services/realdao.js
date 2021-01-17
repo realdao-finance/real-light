@@ -22,7 +22,18 @@ export default class RealDAOService extends RealDAO {
     this._lastRDSPrice = 1
   }
 
-  async initialize() {}
+  async initialize() {
+    const fetchRDSPrice = this.fetchRDSPrice.bind(this)
+    fetchRDSPrice()
+    setInterval(fetchRDSPrice, 10000)
+  }
+
+  async fetchRDSPrice() {
+    const uniswapPairView = this.uniswapPairView(this.config.rdsPair.address)
+    const reserves = await uniswapPairView.getReserves().call()
+    const price = (Number(reserves[0]) * 10 ** this.config.rdsPair.decimalsDiff) / Number(reserves[1])
+    this._lastRDSPrice = Number(price.toFixed(3))
+  }
 
   async getOverview() {
     await this.loadReporter()
