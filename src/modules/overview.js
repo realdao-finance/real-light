@@ -22,7 +22,7 @@ export default class Overview {
         inputBorrowAmount: '0',
         inputRedeemAmount: '0',
         inputRepayAmount: '0',
-        tabs: null
+        tabs: null,
       },
       computed: {},
       methods: {
@@ -33,7 +33,7 @@ export default class Overview {
         doRepay: this.doRepay.bind(this),
         doApprove: this.doApprove.bind(this),
       },
-      mounted(){
+      mounted() {
         // setTimeout(()=>{
         //   let tabs = document.getElementById('tabs')
         //   M.Tabs.init(tabs, {});
@@ -41,7 +41,7 @@ export default class Overview {
         // this.$nextTick(() => {
         //    this.initTabs()
         // })
-      }
+      },
     })
     this.lastRefreshOverViewTime = 0
     this.lastRefreshBalancesTime = 0
@@ -55,7 +55,6 @@ export default class Overview {
     const refresh = this._refresh.bind(this)
     refresh()
     setInterval(refresh, this.config.refreshInterval)
-     
   }
 
   setLoginAccount(account) {
@@ -168,21 +167,21 @@ export default class Overview {
     this.lastRefreshOverViewTime = Date.now()
     const realdao = this.service.realdao
     const overview = await realdao.getOverview()
-    console.log('overview:', overview)
+    logger.debug('overview:', overview)
     this.vm.markets = overview.markets
     this.selectMarket(this.vm.selectedIndex)
     this.vm.loaded = true
     this.eb.emit(OVERVIEW_LOADED_EVENT, overview)
-    if(!this.vm.tabs){
+    if (!this.vm.tabs) {
       setTimeout(() => {
         this.initTabs()
-      }, 1);
+      }, 1)
     }
   }
 
-   initTabs() {
+  initTabs() {
     let tabs = document.getElementById('tabs')
-    let tabInstance = M.Tabs.init(tabs, {});
+    let tabInstance = M.Tabs.init(tabs, {})
     this.vm.tabs = tabInstance
   }
 
@@ -192,10 +191,10 @@ export default class Overview {
       return
     }
     this.lastRefreshBalancesTime = Date.now()
-    console.log('refreshBalances:', this.vm.loginAccount)
+    logger.debug('refreshBalances:', this.vm.loginAccount)
     const realdao = this.service.realdao
     const result = await realdao.getAccountBalances(this.vm.loginAccount)
-    console.log('getAccountBalances:', result)
+    logger.debug('getAccountBalances:', result)
     const balances = {}
     for (const item of result.sheets) {
       const symbol = 'r' + item.underlyingSymbol

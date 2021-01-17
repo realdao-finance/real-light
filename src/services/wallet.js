@@ -2,7 +2,7 @@ export default class WalletService {
   async initialize() {}
 
   currentProvider() {
-    console.log('currentProvider:', window.ethereum)
+    logger.debug('currentProvider:', window.ethereum)
     return window.ethereum
   }
 
@@ -37,7 +37,7 @@ export default class WalletService {
   onChainChanged(handler) {
     if (window.ethereum) {
       window.ethereum.on('chainChanged', (chainId) => {
-        console.log('chainChanged:', chainId)
+        logger.debug('chainChanged:', chainId)
         handler()
       })
     }

@@ -72,9 +72,9 @@ export default class Mining {
     this.lastRefreshTime = Date.now()
 
     const realdao = this.service.realdao
-    console.log('loginAccount:', this.vm.loginAccount)
+    logger.debug('loginAccount:', this.vm.loginAccount)
     const miningInfo = await realdao.getPools(this.vm.loginAccount)
-    console.log('miningInfo:', miningInfo)
+    logger.debug('miningInfo:', miningInfo)
     this.vm.pools = miningInfo.pools
     this.vm.my = miningInfo.my
 

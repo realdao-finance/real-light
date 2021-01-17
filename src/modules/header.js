@@ -86,7 +86,7 @@ export default class Header {
   }
 
   _showWalletButton(text) {
-    console.log('wallet button text', text)
+    logger.debug('wallet button text', text)
     this.vm.walletButtonText = text
     this.vm.loginAccount = null
   }
@@ -109,7 +109,7 @@ export default class Header {
     wallet
       .getDefaultAccount()
       .then((account) => {
-        console.log('selectAccount:', account)
+        logger.debug('selectAccount:', account)
         if (account) {
           this.vm.loginAccount = account
 
@@ -121,7 +121,7 @@ export default class Header {
         }
       })
       .catch((err) => {
-        // console.log('failed to get account:', err)
+        // logger.debug('failed to get account:', err)
         M.toast({ html: 'Failed to get account', classes: 'rounded' })
         this._showWalletButton('Account Not Found')
       })
