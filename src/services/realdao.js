@@ -2,9 +2,9 @@ const FIXED_POINT = 1e18
 const PRICE_POINT = 1e8
 const DOL_POINT = 1e8
 const RDS_POINT = 1e8
-const INITIAL_REWARD = 4
-const BLOCKS_PER_YEAR = 2102400
-const INITIAL_SUPPLY = 4200000
+const BLOCKS_PER_YEAR = 2102400 * 5
+const INITIAL_SUPPLY = 2e7
+const INITIAL_REWARD = 8e7 / 2 / BLOCKS_PER_YEAR
 const MAX_UINT256 = '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'
 
 export default class RealDAOService extends RealDAO {
@@ -23,9 +23,11 @@ export default class RealDAOService extends RealDAO {
   }
 
   async initialize() {
-    const fetchRDSPrice = this.fetchRDSPrice.bind(this)
-    fetchRDSPrice()
-    setInterval(fetchRDSPrice, 10000)
+    if (this.config.rdsPair) {
+      const fetchRDSPrice = this.fetchRDSPrice.bind(this)
+      fetchRDSPrice()
+      setInterval(fetchRDSPrice, 10000)
+    }
   }
 
   async fetchRDSPrice() {
@@ -399,6 +401,7 @@ export default class RealDAOService extends RealDAO {
   }
 
   _calculateMined(start, end) {
+    if (start === 0) return 0
     let total = 0
     let rewardPerBlock = INITIAL_REWARD
     while (start + BLOCKS_PER_YEAR <= end) {
@@ -407,6 +410,6 @@ export default class RealDAOService extends RealDAO {
       rewardPerBlock /= 2
     }
     total += (end - start) * INITIAL_REWARD
-    return total
+    return Math.floor(total)
   }
 }
