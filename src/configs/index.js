@@ -7,7 +7,7 @@ export async function getConfig(env) {
   }
   let defaultLogLevel = env === 'mainnet' ? 'FATAL' : 'DEBUG'
   const generalConfig = {
-    refreshInterval: 3000,
+    refreshInterval: 10000,
     env,
     logLevel: query.logLevel || defaultLogLevel,
   }

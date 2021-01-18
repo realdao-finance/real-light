@@ -38,9 +38,9 @@
                         <td>-</td>
                     </template>
                     <td>
-                        <button class="pure-button button-xsmall">Claim</button>
-                        <button class="pure-button button-xsmall" v-if="item.ptype === 2">Exit</button>
-                        <button class="pure-button button-xsmall" v-if="item.ptype === 2" v-on:click.prevent="window.open(item.lpUrl)">Provide Liquidity</a>
+                        <button class="button-xsmall">Claim</button>
+                        <button class="button-xsmall" v-if="item.ptype === 2">Exit</button>
+                        <button class="button-xsmall" v-if="item.ptype === 2" v-on:click.prevent="window.open(item.lpUrl)">Provide Liquidity</a>
                     </td>
                 </tr>
             </tbody>
@@ -52,9 +52,9 @@
                     <fieldset>
                         <legend>Stake LP Token ({{ selectedLPToken }})</legend>
                         <span>Balance: {{ lpBalance }}</span>
-                        <input placeholder="Amount" />
-                        <button v-show="needApprove" class="pure-button">Approve</button>
-                        <button class="btn btn-flat btn-small deep-purple accent-3 white-text">Stake</button>
+                        <input placeholder="Amount" v-model="inputStakeAmount"/>
+                        <button v-show="needApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text" v-on:click.prevent="doApprove">Approve</button>
+                        <button class="btn btn-flat btn-small deep-purple accent-3 white-text" v-on:click.prevent="doStake">Stake</button>
                     </fieldset>
                 </form>
             </div>

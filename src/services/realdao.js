@@ -9,9 +9,11 @@ const MAX_UINT256 = '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 export default class RealDAOService extends RealDAO {
   constructor(options) {
+    const configEnv = options.config.env
+    const env = configEnv === 'remote' ? 'dev' : configEnv
     const realDAOOptions = {
       Web3,
-      env: options.config.env,
+      env,
       provider: options.config.provider,
       orchestrator: options.config.orchestrator,
     }

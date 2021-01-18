@@ -1,4 +1,4 @@
-import { realToLiteral } from '../lib/utils.js'
+import { realToLiteral, literalToReal } from '../lib/utils.js'
 
 export default class Mining {
   constructor(options) {
@@ -16,9 +16,12 @@ export default class Mining {
         selectedLPToken: '...',
         needApprove: false,
         lpBalance: '0',
+        inputStakeAmount: '0',
       },
       methods: {
         selectPool: this.selectPool.bind(this),
+        doApprove: this.doApprove.bind(this),
+        doStake: this.doStake.bind(this),
       },
       computed: {},
     })
@@ -51,7 +54,33 @@ export default class Mining {
       this.vm.selectedLPToken = pool.title
       this.vm.selectedIndex = index
       this._checkAllowance()
+      this._refreshLPBalance()
     }
+  }
+
+  async doApprove() {
+    if (!this.vm.loginAccount) return
+    const pool = this.vm.pools[this.vm.selectedIndex]
+    if (!pool) return
+
+    const { tokenAddr } = pool
+    const distributorAddr = this.service.realdao.distributor(true).options.address
+    await this.service.realdao.approve(tokenAddr, distributorAddr, this.vm.loginAccount)
+  }
+
+  async doStake() {
+    if (!this.vm.loginAccount) return
+    const pool = this.vm.pools[this.vm.selectedIndex]
+    if (!pool) return
+
+    const inputAmount = Number(this.vm.inputStakeAmount)
+    if (Number.isNaN(inputAmount) || inputAmount <= 0) return
+
+    const realAmount = literalToReal(inputAmount, 18)
+    await this.service.realdao
+      .distributor()
+      .mintExchangingPool(pool.id, realAmount)
+      .send({ from: this.vm.loginAccount })
   }
 
   async _checkAllowance() {
@@ -80,8 +109,6 @@ export default class Mining {
 
     this.selectPool(this.vm.selectedIndex)
     this.vm.loaded = true
-
-    this._refreshLPBalance()
   }
 
   async _refreshLPBalance() {
@@ -92,6 +119,7 @@ export default class Mining {
     const { tokenAddr } = pool
     const contract = this.service.realdao.erc20Token(tokenAddr)
     const results = await Promise.all([contract.balanceOf(this.vm.loginAccount).call(), contract.decimals().call()])
+    logger.debug('refresh LP balance:', tokenAddr, results)
     const balance = realToLiteral(results[0], results[1])
     this.vm.lpBalance = balance
   }
