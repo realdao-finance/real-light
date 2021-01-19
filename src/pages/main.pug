@@ -28,9 +28,11 @@ block content
     }
   div#app
     hr
-    div.align-center
-      router-link(to='/lending') Lending |
-      router-link(to='/staking') Staking
+    div.nav
+      router-link(to='/lending')
+        span Lending
+      router-link(to='/staking')
+        span Staking
     hr
     Topbar
     hr

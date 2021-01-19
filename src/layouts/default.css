@@ -13,8 +13,12 @@
   background-color: #EEEEEE;
 }
 
-.align-center {
+.nav {
   text-align: center;
+}
+
+.nav a {
+  padding: 0 5px;
 }
 
 .align-right {

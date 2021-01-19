@@ -92,7 +92,6 @@ export default class Staking extends VueModule {
     if (!force && Date.now() - this.lastRefreshTime < this.refreshInterval) {
       return
     }
-    console.log('refresh mining module', force)
     this.lastRefreshTime = Date.now()
 
     const realdao = this.service.realdao
@@ -100,7 +99,9 @@ export default class Staking extends VueModule {
     const miningInfo = await realdao.getPools(this.model.loginAccount)
     logger.debug('miningInfo:', miningInfo)
     this.model.pools = miningInfo.pools
-    this.model.my = miningInfo.my
+    if (miningInfo.my && miningInfo.my.length > 0) {
+      this.model.my = miningInfo.my
+    }
 
     this.selectPool(this.model.selectedIndex)
     this.model.loaded = true

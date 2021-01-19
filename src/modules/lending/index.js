@@ -152,7 +152,6 @@ export default class Lending extends VueModule {
     if (Date.now() - this.lastRefreshOverViewTime < this.refreshInterval) {
       return
     }
-    console.log('refresh overview module')
     this.lastRefreshOverViewTime = Date.now()
     const realdao = this.service.realdao
     const overview = await realdao.getOverview()

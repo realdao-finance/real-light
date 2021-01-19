@@ -112,7 +112,6 @@ export default class Topbar extends VueModule {
       return
     }
     this.lastRefreshTime = Date.now()
-    console.log('refresh topbar module', force)
     if (!this.model.loginAccount) return
     const realdao = this.service.realdao
     const result = await realdao.getAccountLiquidity(this.model.loginAccount)
