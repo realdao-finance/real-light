@@ -17,6 +17,12 @@ export async function loadModules(files, options) {
   for (const file of files) {
     const Module = await import(file)
     const instance = new Module.default(options)
+    const name = Module.default.name
+    instance.template = `#${name.toLowerCase()}`
+    instance.data = () => {
+      return instance.model
+    }
+    Vue.component(name, instance)
     await instance.initialize()
     modules.push(instance)
   }

@@ -1,1 +1,24 @@
-p Hello, World!
+extends ../layouts/default.pug
+
+mixin pet(arr)
+  each val in arr
+    p = #{val}
+  script(type="module").
+    import {main} from '/pages/test.js'
+    window.onload = () => {
+      main("#{modules}".split(","))
+    }
+
+block scripts
+  -
+    var modules = [
+      'm1',
+      'm2',
+    ]
+  script(src='https://cdn.jsdelivr.net/npm/vue@2.6.12')
+block content
+  #app
+    button(v-for="tab in tabs" v-bind:key="tab" v-on:click="currentTab = tab") {{ tab }}
+    br
+    component(v-bind:is="currentTab")
+    +pet(modules)

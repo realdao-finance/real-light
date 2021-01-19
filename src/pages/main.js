@@ -4,20 +4,8 @@ import { createLogger } from '../lib/logger.js'
 import { toFixed, toFixedPercent } from '../lib/utils.js'
 import { getConfig } from '../configs/index.js'
 
-// prettier-ignore
-const serviceFiles = [
-  '../services/realdao.js',
-  '../services/wallet.js'
-]
-
-// prettier-ignore
-const moduleFiles = [
-  '../modules/header.js',
-  '../modules/overview.js',
-  '../modules/mining.js',
-]
-
-async function main() {
+export async function main(argv) {
+  argv = argv || []
   const config = await getConfig()
   window.logger = createLogger({ level: config.logLevel })
 
@@ -26,15 +14,22 @@ async function main() {
   Vue.filter('toFixed', toFixed)
   Vue.filter('toFixedPercent', toFixedPercent)
 
+  const serviceFiles = argv[0] || []
+  const moduleFiles = (argv[1] || []).map((mod) => `${mod}/index.js`)
+
   const service = await loadServices(serviceFiles, { config })
   const eb = new EventEmitter()
   const options = { config, service, eb }
 
   const modules = await loadModules(moduleFiles, options)
+  new Vue({
+    el: '#app',
+    data: {
+      currentTab: 'overview',
+      tabs: ['overview', 'mining'],
+    },
+  })
   for (const mod of modules) {
     mod.run()
   }
-  M.AutoInit()
 }
-
-window.onload = main
