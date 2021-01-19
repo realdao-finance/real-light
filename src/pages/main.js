@@ -21,13 +21,11 @@ export async function main(argv) {
   const eb = new EventEmitter()
   const options = { config, service, eb }
 
-  const modules = await loadModules(moduleDirs, options)
+  const routes = []
+  const modules = await loadModules(moduleDirs, options, routes)
   new Vue({
     el: '#app',
-    data: {
-      currentTab: 'overview',
-      tabs: ['overview', 'mining'],
-    },
+    router: new VueRouter({ routes }),
   })
   for (const mod of modules) {
     mod.run()

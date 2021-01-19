@@ -11,7 +11,7 @@ Just clone it and control it, dont be controlled.
 - [x] Pug
 - [x] Data Binding
   - [x] Vue2
-- [ ] Router
+- [x] Router
 - [ ] Boundle
 - [ ] Preprocess
   - [ ] Less

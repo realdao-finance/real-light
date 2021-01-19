@@ -3,13 +3,15 @@ import VueModule from '../vue-module.js'
 
 const OVERVIEW_LOADED_EVENT = 'overviewLoaded'
 
-export default class Overview extends VueModule {
+export default class Lending extends VueModule {
   constructor(options) {
     super()
     this.config = options.config
     this.service = options.service
     this.eb = options.eb
 
+    this.path = '/lending'
+    this.isHome = true
     this.model = {
       markets: [],
       balances: null,
@@ -38,11 +40,8 @@ export default class Overview extends VueModule {
     this.refreshInterval = this.config.refreshInterval
   }
 
-  async initialize() {
-    this.eb.on('accountChanged', this.setLoginAccount.bind(this))
-  }
-
   run() {
+    this.eb.on('accountChanged', this.setLoginAccount.bind(this))
     this._refresh()
   }
 

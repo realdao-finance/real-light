@@ -1,13 +1,14 @@
 import { realToLiteral, literalToReal } from '/lib/utils.js'
 import VueModule from '../vue-module.js'
 
-export default class Mining extends VueModule {
+export default class Staking extends VueModule {
   constructor(options) {
     super()
     this.config = options.config
     this.service = options.service
     this.eb = options.eb
 
+    this.path = '/staking'
     this.model = {
       pools: [],
       my: [],
@@ -28,10 +29,6 @@ export default class Mining extends VueModule {
     this.refreshInterval = this.config.refreshInterval
   }
 
-  async initialize() {
-    this.eb.on('accountChanged', this.setLoginAccount.bind(this))
-  }
-
   setLoginAccount(account) {
     const old = this.model.loginAccount
     this.model.loginAccount = account
@@ -41,6 +38,7 @@ export default class Mining extends VueModule {
   }
 
   run() {
+    this.eb.on('accountChanged', this.setLoginAccount.bind(this))
     this._refresh()
   }
 

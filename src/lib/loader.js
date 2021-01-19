@@ -12,28 +12,35 @@ export async function loadServices(files, options) {
   return service
 }
 
-export async function loadModules(dirs, options) {
+export async function loadModule(dir, options) {
+  const jsFile = `${dir}/index.js`
+  const tmplFile = `${dir}/index.html`
+  const Module = await import(jsFile)
+  const instance = new Module.default(options)
+  // instance.template = `#${name.toLowerCase()}`
+  instance.data = () => {
+    return instance.model
+  }
+  const tmplResponse = await fetch(tmplFile)
+  const tmplContent = await tmplResponse.text()
+  instance.template = tmplContent
+  return instance
+}
+
+export async function loadModules(dirs, options, routes) {
   const modules = []
   for (const dir of dirs) {
-    const jsFile = `${dir}/index.js`
-    const tempFile = `${dir}/index.html`
-    const Module = await import(jsFile)
-    const instance = new Module.default(options)
-    const name = Module.default.name
-    // instance.template = `#${name.toLowerCase()}`
-    instance.data = () => {
-      return instance.model
+    const parts = dir.split('/')
+    const tag = parts[parts.length - 1]
+    const instance = await loadModule(dir, options)
+    if (instance.path) {
+      routes.push({ path: instance.path, component: instance })
+      if (instance.isHome) {
+        routes.push({ path: '/', redirect: instance.path })
+      }
+    } else {
     }
-    Vue.component(name, (resolve, reject) => {
-      fetch(tempFile)
-        .then((result) => result.text())
-        .then((html) => {
-          instance.template = html
-          resolve(instance)
-        })
-        .catch(reject)
-    })
-    await instance.initialize()
+    Vue.component(tag, instance)
     modules.push(instance)
   }
   return modules

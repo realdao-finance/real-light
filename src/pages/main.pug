@@ -5,6 +5,7 @@ block scripts
   script(src='https://cdn.jsdelivr.net/npm/realdao@0.1.9/dist/realdao.min.js')
   //- script(src='/pages/realdao.min.js')
   script(src='https://cdn.jsdelivr.net/npm/vue@2.6.12')
+  script(src='https://unpkg.com/vue-router/dist/vue-router.js')
 
 block content
   -
@@ -14,8 +15,8 @@ block content
     ]
     var modules = [
       '/modules/topbar',
-      '/modules/overview',
-      '/modules/mining',
+      '/modules/lending',
+      '/modules/staking',
     ]
   script(type='module').
     import { main } from '/pages/main.js'
@@ -27,9 +28,10 @@ block content
     }
   div#app
     hr
-    button(v-for="tab in tabs" v-bind:key="tab" v-on:click="currentTab = tab") {{ tab }}
+    div.align-center
+      router-link(to='/lending') Lending |
+      router-link(to='/staking') Staking
     hr
     Topbar
     hr
-    keep-alive
-      component(v-bind:is="currentTab")
+    router-view

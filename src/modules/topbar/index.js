@@ -36,8 +36,6 @@ export default class Topbar extends VueModule {
     this.refreshInterval = this.config.refreshInterval
   }
 
-  async initialize() {}
-
   setOverviewData(overview) {
     this.model.overview = overview
     this.model.loaded = true
