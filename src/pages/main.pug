@@ -6,8 +6,6 @@ block scripts
   //- script(src='/pages/realdao.min.js')
   script(src='https://cdn.jsdelivr.net/npm/vue@2.6.12')
   script(src='https://unpkg.com/vue-router/dist/vue-router.js')
-
-block content
   -
     var services = [
       '/services/realdao.js',
@@ -24,6 +22,8 @@ block content
       main([ !{JSON.stringify(services)},  !{JSON.stringify(modules)}])
       M.AutoInit()
     }
+
+block content
   div#app
     hr
     div.nav
