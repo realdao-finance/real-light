@@ -27,17 +27,17 @@ export async function loadModule(dir, options) {
   return instance
 }
 
-export async function loadModules(dirs, options, routes) {
-  for (const dir of dirs) {
-    const parts = dir.split('/')
+export async function loadModules(moduleConfigs, options, routes) {
+  for (const config of moduleConfigs) {
+    const parts = config.path.split('/')
     const tag = parts[parts.length - 1]
     // FIXME use module config
-    if (tag === 'topbar') {
-      const instance = await loadModule(dir, options)
-      Vue.component(tag, instance)
+    if (config.route) {
+      routes.push({ path: config.route, component: () => loadModule(config.path, options) })
+      if (config.home) routes.push({ path: '/', redirect: config.route })
     } else {
-      routes.push({ path: `/${tag}`, component: () => loadModule(dir, options) })
+      const instance = await loadModule(config.path, options)
+      Vue.component(tag, instance)
     }
   }
-  routes.push({ path: '/', redirect: '/lending' })
 }

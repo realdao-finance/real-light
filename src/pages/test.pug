@@ -2,18 +2,18 @@ extends ../layouts/default.pug
 
 mixin pet(arr)
   each val in arr
-    p = #{val}
+    p = #{val.name}
   script(type="module").
     import {main} from '/pages/test.js'
     window.onload = () => {
-      main("#{modules}".split(","))
+      main( !{JSON.stringify(arr)})
     }
 
 block scripts
   -
     var modules = [
-      'm1',
-      'm2',
+      { name: 'm1', path: '/m1' },
+      { name: 'm2', path: '/m2' },
     ]
   script(src='https://cdn.jsdelivr.net/npm/vue@2.6.12')
 block content

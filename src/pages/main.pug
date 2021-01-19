@@ -14,16 +14,14 @@ block content
       '/services/wallet.js',
     ]
     var modules = [
-      '/modules/topbar',
-      '/modules/lending',
-      '/modules/staking',
+      { path: '/modules/topbar' },
+      { path: '/modules/lending', route: '/lending', home: true },
+      { path: '/modules/staking',  route: '/staking' },
     ]
   script(type='module').
     import { main } from '/pages/main.js'
     window.onload = () => {
-      const services = '#{services}'.split(',')
-      const modules = '#{modules}'.split(',')
-      main([services, modules])
+      main([ !{JSON.stringify(services)},  !{JSON.stringify(modules)}])
       M.AutoInit()
     }
   div#app
