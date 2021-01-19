@@ -12,17 +12,27 @@ export async function loadServices(files, options) {
   return service
 }
 
-export async function loadModules(files, options) {
+export async function loadModules(dirs, options) {
   const modules = []
-  for (const file of files) {
-    const Module = await import(file)
+  for (const dir of dirs) {
+    const jsFile = `${dir}/index.js`
+    const tempFile = `${dir}/index.html`
+    const Module = await import(jsFile)
     const instance = new Module.default(options)
     const name = Module.default.name
-    instance.template = `#${name.toLowerCase()}`
+    // instance.template = `#${name.toLowerCase()}`
     instance.data = () => {
       return instance.model
     }
-    Vue.component(name, instance)
+    Vue.component(name, (resolve, reject) => {
+      fetch(tempFile)
+        .then((result) => result.text())
+        .then((html) => {
+          instance.template = html
+          resolve(instance)
+        })
+        .catch(reject)
+    })
     await instance.initialize()
     modules.push(instance)
   }

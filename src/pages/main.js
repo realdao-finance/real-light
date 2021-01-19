@@ -15,13 +15,13 @@ export async function main(argv) {
   Vue.filter('toFixedPercent', toFixedPercent)
 
   const serviceFiles = argv[0] || []
-  const moduleFiles = (argv[1] || []).map((mod) => `${mod}/index.js`)
+  const moduleDirs = argv[1] || []
 
   const service = await loadServices(serviceFiles, { config })
   const eb = new EventEmitter()
   const options = { config, service, eb }
 
-  const modules = await loadModules(moduleFiles, options)
+  const modules = await loadModules(moduleDirs, options)
   new Vue({
     el: '#app',
     data: {

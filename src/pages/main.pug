@@ -25,9 +25,6 @@ block content
       main([services, modules])
       M.AutoInit()
     }
-  include ../modules/topbar/index.html
-  include ../modules/overview/index.html
-  include ../modules/mining/index.html
   div#app
     hr
     button(v-for="tab in tabs" v-bind:key="tab" v-on:click="currentTab = tab") {{ tab }}
