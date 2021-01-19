@@ -34,22 +34,17 @@ export default class Topbar extends VueModule {
 
     this.lastRefreshTime = 0
     this.refreshInterval = this.config.refreshInterval
+    this.eb.on('overviewLoaded', this.setOverviewData.bind(this))
+
+    this.walletFirstChecked = false
+    const checkWallet = this._checkWallet.bind(this)
+    this.service.wallet.onAccountChanged(checkWallet)
+    this.service.wallet.onChainChanged(checkWallet)
   }
 
   setOverviewData(overview) {
     this.model.overview = overview
     this.model.loaded = true
-  }
-
-  run() {
-    this.eb.on('overviewLoaded', this.setOverviewData.bind(this))
-
-    const checkWallet = this._checkWallet.bind(this)
-    this.service.wallet.onAccountChanged(checkWallet)
-    this.service.wallet.onChainChanged(checkWallet)
-    checkWallet()
-
-    this._refresh()
   }
 
   login() {
@@ -71,6 +66,7 @@ export default class Topbar extends VueModule {
   }
 
   _checkWallet() {
+    this.walletFirstChecked = true
     const wallet = this.service.wallet
     if (!wallet.isInstalled()) {
       this.model.walletInstalled = false
@@ -108,6 +104,9 @@ export default class Topbar extends VueModule {
   }
 
   async _refresh(force) {
+    if (!this.walletFirstChecked) {
+      this._checkWallet()
+    }
     if (!force && Date.now() - this.lastRefreshTime < this.refreshInterval) {
       return
     }

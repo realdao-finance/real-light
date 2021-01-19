@@ -22,12 +22,9 @@ export async function main(argv) {
   const options = { config, service, eb }
 
   const routes = []
-  const modules = await loadModules(moduleDirs, options, routes)
+  await loadModules(moduleDirs, options, routes)
   new Vue({
     el: '#app',
     router: new VueRouter({ routes }),
   })
-  for (const mod of modules) {
-    mod.run()
-  }
 }

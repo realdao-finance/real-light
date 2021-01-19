@@ -27,6 +27,10 @@ export default class Staking extends VueModule {
     }
     this.lastRefreshTime = 0
     this.refreshInterval = this.config.refreshInterval
+    this.eb.on('accountChanged', this.setLoginAccount.bind(this))
+    if (this.service.wallet.loginAccount) {
+      this.setLoginAccount(this.service.wallet.loginAccount)
+    }
   }
 
   setLoginAccount(account) {
@@ -35,11 +39,6 @@ export default class Staking extends VueModule {
     if (old !== account) {
       this._refresh(true)
     }
-  }
-
-  run() {
-    this.eb.on('accountChanged', this.setLoginAccount.bind(this))
-    this._refresh()
   }
 
   selectPool(index) {

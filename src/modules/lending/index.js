@@ -36,13 +36,8 @@ export default class Lending extends VueModule {
     }
     this.lastRefreshOverViewTime = 0
     this.lastRefreshBalancesTime = 0
-
     this.refreshInterval = this.config.refreshInterval
-  }
-
-  run() {
     this.eb.on('accountChanged', this.setLoginAccount.bind(this))
-    this._refresh()
   }
 
   setLoginAccount(account) {

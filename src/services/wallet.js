@@ -20,6 +20,7 @@ export default class WalletService {
 
   getDefaultAccount() {
     return window.ethereum.request({ method: 'eth_accounts' }).then((accounts) => {
+      if (accounts[0]) this.loginAccount = accounts[0]
       return accounts[0]
     })
   }
