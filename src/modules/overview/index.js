@@ -165,7 +165,7 @@ export default class Overview extends VueModule {
     if (!this.model.tabs) {
       setTimeout(() => {
         this.initTabs()
-      }, 1)
+      }, 10)
     }
   }
 
