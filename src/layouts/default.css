@@ -21,8 +21,24 @@
   padding: 0 5px;
 }
 
+.nav img {
+  height: 32px;
+  vertical-align: middle;
+}
+
 .align-right {
   text-align: right;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.asset-icon {
+  vertical-align: middle;
+  margin-right: 10px;
+  width: 32px;
+  height: 32px;
 }
 
 .button-xsmall {
@@ -54,7 +70,7 @@ form button {
   margin: 0 0px 10px 0px;
 }
 
-h3 {
+h5 {
   text-align: center;
 }
 

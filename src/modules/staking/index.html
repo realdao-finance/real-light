@@ -1,13 +1,11 @@
 <template>
     <div v-if="!loaded">Loading...</div>
     <div v-else>
-        <h3>Staking</h3>
+        <h5>Staking</h5>
         <table class="highlight">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Id</th>
-                    <th>Name</th>
+                    <th>Pool</th>
                     <th>Total Power</th>
                     <th>APY</th>
                     <th>State</th>
@@ -20,9 +18,7 @@
             </thead>
             <tbody>
                 <tr v-for="(item, index) in pools" :key="item.id" v-bind:class="[item.ptype === 2 ? 'pointer' : '']" v-on:click="selectPool(index)">
-                    <td></td>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.title }}</td>
+                    <td><img :src="'/assets/s' + index + '.svg'" class="asset-icon">{{ item.title }}</td>
                     <td>{{ item.totalPowerNormalizedLiteral | toFixed(0) }}</td>
                     <td>{{ item.apy | toFixedPercent(2) }}</td>
                     <td>{{ item.state }}</td>
@@ -54,7 +50,7 @@
                         <span>Balance: {{ lpBalance }}</span>
                         <input placeholder="Amount" v-model="inputStakeAmount"/>
                         <button v-show="needApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text" v-on:click.prevent="doApprove">Approve</button>
-                        <button class="btn btn-flat btn-small deep-purple accent-3 white-text" v-on:click.prevent="doStake">Stake</button>
+                        <button class="btn waves-effect waves-light" v-on:click.prevent="doStake">Stake</button>
                     </fieldset>
                 </form>
             </div>

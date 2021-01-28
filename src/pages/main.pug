@@ -25,12 +25,14 @@ block scripts
 
 block content
   div#app
-    hr
     div.nav
-      router-link(to='/lending')
-        span Lending
-      router-link(to='/staking')
-        span Staking
+      img(src='/assets/logo.png')
+      br
+      span.link
+        router-link(to='/lending')
+          span Lending
+        router-link(to='/staking')
+          span Staking
     hr
     Topbar
     hr

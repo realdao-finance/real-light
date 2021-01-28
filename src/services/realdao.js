@@ -180,8 +180,8 @@ export default class RealDAOService extends RealDAO {
     }
     const rewardsPerBlock = Number(results[2])
 
-    const lendingPoolTitles = ['ETH', 'DOL', 'renBTC']
-    const exchangingPoolTitles = ['ETH/DOL', 'ETH/RDS']
+    const lendingPoolTitles = ['DOL', 'HBTC', 'HETH', 'WHT']
+    const exchangingPoolTitles = ['HUSD/DOL', 'HUSD/RDS', 'HT/DOL', 'HT/RDS']
 
     const dol = this.dol(true)
     const rds = this.rds(true)

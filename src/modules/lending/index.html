@@ -1,13 +1,11 @@
 <template>
     <div v-if="!loaded">Loading...</div>
     <div v-else>
-        <h3>Markets</h3>
+        <h5>Markets</h5>
         <table class="highlight">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Symbol</th>
-                    <th>Underlying</th>
                     <th>Supply Rate</th>
                     <th>Borrow Rate</th>
                     <th>Total Cash</th>
@@ -26,9 +24,7 @@
             </thead>
             <tbody>
                 <tr v-for="(item, index) in markets" :key="item.symbol" v-on:click="selectMarket(index)" class="pointer">
-                    <td></td>
-                    <td>{{ item.symbol }}</td>
-                    <td>{{ item.underlyingSymbol }}</td>
+                    <td><img :src="'/assets/' + item.underlyingSymbol + '.svg'" class="asset-icon">{{ item.underlyingSymbol }}</td>
                     <td>{{ item.supplyRatePerYear | toFixedPercent(4) }}</td>
                     <td>{{ item.borrowRatePerYear | toFixedPercent(4) }}</td>
                     <td>{{ item.totalCashLiteral | toFixed(2) }}</td>
@@ -62,7 +58,7 @@
                             <legend>Supply {{ selectedSymbol }}</legend>
                             <input v-model="inputSupplyAmount" placeholder="Amount" /><br />
                             <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text">Approve</button>
-                            <button v-on:click.prevent="doSupply" class="btn btn-flat btn-small deep-purple accent-3 white-text">Supply</button>
+                            <button v-on:click.prevent="doSupply" class="btn waves-effect waves-light">Supply</button>
                         </fieldset>
                     </form>
                 </div>
@@ -71,7 +67,7 @@
                         <fieldset>
                             <legend>Borrow {{ selectedSymbol }}</legend>
                             <input v-model="inputBorrowAmount" placeholder="Amount" /><br />
-                            <button v-on:click.prevent="doBorrow" class="btn btn-flat btn-small deep-purple accent-3 white-text">Borrow</button>
+                            <button v-on:click.prevent="doBorrow" class="btn waves-effect waves-light">Borrow</button>
                         </fieldset>
                     </form>
                 </div>
@@ -80,7 +76,7 @@
                         <fieldset>
                             <legend>Redeem {{ selectedSymbol }}</legend>
                             <input v-model="inputRedeemAmount" placeholder="Amount" />
-                            <button v-on:click.prevent="doRedeem" class="btn btn-flat btn-small deep-purple accent-3 white-text">Redeem</button>
+                            <button v-on:click.prevent="doRedeem" class="btn waves-effect waves-light">Redeem</button>
                         </fieldset>
                     </form>
                 </div>
@@ -90,7 +86,7 @@
                             <legend>Repay {{ selectedSymbol }}</legend>
                             <input v-model="inputRepayAmount" placeholder="Amount" />
                             <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text">Approve</button>
-                            <button v-on:click.prevent="doRepay" class="btn btn-flat btn-small deep-purple accent-3 white-text">Repay</button>
+                            <button v-on:click.prevent="doRepay" class="btn waves-effect waves-light">Repay</button>
                         </fieldset>
                     </form>
                 </div> 
