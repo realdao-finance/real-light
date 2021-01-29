@@ -182,10 +182,12 @@ export default class RealDAOService extends RealDAO {
 
     const lendingPoolTitles = ['DOL', 'HBTC', 'HETH', 'WHT']
     const exchangingPoolTitles = ['HUSD/DOL', 'HUSD/RDS', 'HT/DOL', 'HT/RDS']
-
-    const dol = this.dol(true)
-    const rds = this.rds(true)
-    const exchangingTokens = [dol.options.address, rds.options.address]
+    const lpUrls = [
+      `${this.config.swapUrl}/#/add/0x1D8684e6CdD65383AfFd3D5CF8263fCdA5001F13/0xdb4c5b219168F926c2c0C776438B8355a3A4018e`,
+      `${this.config.swapUrl}/#/add/0x1D8684e6CdD65383AfFd3D5CF8263fCdA5001F13/0xdb4c5b219168F926c2c0C776438B8355a3A4018e`,
+      `${this.config.swapUrl}/#/add/0x1D8684e6CdD65383AfFd3D5CF8263fCdA5001F13/0xdb4c5b219168F926c2c0C776438B8355a3A4018e`,
+      `${this.config.swapUrl}/#/add/0x1D8684e6CdD65383AfFd3D5CF8263fCdA5001F13/0xdb4c5b219168F926c2c0C776438B8355a3A4018e`,
+    ]
 
     const pools = []
     const totalPools = results[3].length
@@ -206,14 +208,7 @@ export default class RealDAOService extends RealDAO {
         pool.totalPowerNormalized = (pool.totalPowerCorrect * ethPrice) / FIXED_POINT
         pool.underlyingPrice = ethPrice
         pool.title = exchangingPoolTitles.shift()
-
-        let baseUrl
-        if (this.chainId() == 1) {
-          baseUrl = 'https://app.uniswap.org/#/add/ETH/'
-        } else {
-          baseUrl = 'http://158.247.223.174:4000/#/add/ETH/'
-        }
-        pool.lpUrl = baseUrl + exchangingTokens.shift()
+        pool.lpUrl = lpUrls.shift()
       }
       const state = pool.state
       if (state === 0) {

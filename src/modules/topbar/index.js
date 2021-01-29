@@ -28,7 +28,7 @@ export default class Topbar extends VueModule {
       },
       accountUrl() {
         if (!this.loginAccount) return ''
-        return `https://${options.config.explorer}/address/${this.loginAccount}`
+        return `${options.config.explorer}/address/${this.loginAccount}`
       },
     }
 

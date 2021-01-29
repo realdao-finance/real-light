@@ -55,9 +55,9 @@
                 <div id="supply" class="col s12">
                     <form class="form">
                         <fieldset>
-                            <legend>Supply {{ selectedSymbol }}</legend>
+                            <legend>Supply <b>{{ selectedSymbol }}</b></legend>
                             <input v-model="inputSupplyAmount" placeholder="Amount" /><br />
-                            <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text">Approve</button>
+                            <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn waves-effect waves-light">Approve</button>
                             <button v-on:click.prevent="doSupply" class="btn waves-effect waves-light">Supply</button>
                         </fieldset>
                     </form>
@@ -65,7 +65,7 @@
                 <div id="borrow" class="col s12">
                     <form class="form">
                         <fieldset>
-                            <legend>Borrow {{ selectedSymbol }}</legend>
+                            <legend>Borrow <b>{{ selectedSymbol }}</b></legend>
                             <input v-model="inputBorrowAmount" placeholder="Amount" /><br />
                             <button v-on:click.prevent="doBorrow" class="btn waves-effect waves-light">Borrow</button>
                         </fieldset>
@@ -74,7 +74,7 @@
                 <div id="redeem" class="col s12">
                     <form class="form">
                         <fieldset>
-                            <legend>Redeem {{ selectedSymbol }}</legend>
+                            <legend>Redeem <b>{{ selectedSymbol }}</b></legend>
                             <input v-model="inputRedeemAmount" placeholder="Amount" />
                             <button v-on:click.prevent="doRedeem" class="btn waves-effect waves-light">Redeem</button>
                         </fieldset>
@@ -83,7 +83,7 @@
                 <div id="repay" class="col s12">
                     <form class="form">
                         <fieldset>
-                            <legend>Repay {{ selectedSymbol }}</legend>
+                            <legend>Repay <b>{{ selectedSymbol }}</b></legend>
                             <input v-model="inputRepayAmount" placeholder="Amount" />
                             <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text">Approve</button>
                             <button v-on:click.prevent="doRepay" class="btn waves-effect waves-light">Repay</button>

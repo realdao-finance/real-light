@@ -46,10 +46,10 @@
             <div class="pure-u-1-3">
                 <form class="form">
                     <fieldset>
-                        <legend>Stake LP Token ({{ selectedLPToken }})</legend>
+                        <legend>Stake LP Token <b>({{ selectedLPToken }})</b></legend>
                         <span>Balance: {{ lpBalance }}</span>
                         <input placeholder="Amount" v-model="inputStakeAmount"/>
-                        <button v-show="needApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text" v-on:click.prevent="doApprove">Approve</button>
+                        <button v-show="needApprove" class="btn waves-effect waves-light" v-on:click.prevent="doApprove">Approve</button>
                         <button class="btn waves-effect waves-light" v-on:click.prevent="doStake">Stake</button>
                     </fieldset>
                 </form>
