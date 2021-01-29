@@ -15,12 +15,12 @@ export function parseBasename(str) {
 }
 
 export function literalToReal(val, decimals) {
-  const real = Number(val) * 10 ** Number(decimals)
+  const real = BigInt(val) * 10n ** BigInt(decimals)
   return real.toString()
 }
 
 export function realToLiteral(val, decimals) {
-  const literal = Number(val) / 10 ** Number(decimals)
+  const literal = BigInt(val) / 10n ** BigInt(decimals)
   return literal
 }
 

@@ -8,4 +8,14 @@ export default {
     address: '0xdde0d948b0597f08878620f1afd3070dc7243386',
     decimalsDiff: 10,
   },
+  stakingPools: [
+    {
+      symbol: 'HUSD/DOL',
+      pairAddress: '0x9DAe9f9B1B5F53BFcCbD1Cc2f6003a2d3E4433aF',
+    },
+    {
+      symbol: 'HUSD/RDS',
+      pairAddress: '0x77787c5DF71a34ABBA4531127F2497880ACb3566',
+    },
+  ],
 }

@@ -10,7 +10,6 @@ export default class Lending extends VueModule {
     this.service = options.service
     this.eb = options.eb
 
-    this.path = '/lending'
     this.isHome = true
     this.model = {
       markets: [],

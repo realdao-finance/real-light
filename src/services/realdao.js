@@ -1,4 +1,5 @@
 const FIXED_POINT = 1e18
+const LP_TOKEN_POINT = 1e18
 const PRICE_POINT = 1e8
 const DOL_POINT = 1e8
 const RDS_POINT = 1e8
@@ -22,21 +23,25 @@ export default class RealDAOService extends RealDAO {
     this.options = options
 
     this._lastRDSPrice = 1
+    this._lpPairs = {}
   }
 
   async initialize() {
+    const refreshInterval = 10000
     if (this.config.rdsPair) {
-      const fetchRDSPrice = this.fetchRDSPrice.bind(this)
+      const fetchRDSPrice = this._fetchRDSPrice.bind(this)
       fetchRDSPrice()
-      setInterval(fetchRDSPrice, 10000)
+      setInterval(fetchRDSPrice, refreshInterval)
     }
-  }
-
-  async fetchRDSPrice() {
-    const uniswapPairView = this.uniswapPairView(this.config.rdsPair.address)
-    const reserves = await uniswapPairView.getReserves().call()
-    const price = (Number(reserves[0]) * 10 ** this.config.rdsPair.decimalsDiff) / Number(reserves[1])
-    this._lastRDSPrice = Number(price.toFixed(3))
+    if (this.config.env === 'mainnet') {
+      for (const pool of this.config.stakingPools) {
+        const stableSymbol = pool.symbol.split('/')[0]
+        const pairAddress = pool.pairAddress
+        const fetchLPPairInfo = this._fetchLPPairInfo.bind(this, pairAddress, stableSymbol)
+        fetchLPPairInfo()
+        setInterval(fetchLPPairInfo, refreshInterval)
+      }
+    }
   }
 
   async getOverview() {
@@ -168,26 +173,26 @@ export default class RealDAOService extends RealDAO {
 
     const results = await Promise.all(querys)
     const rdsPrice = this._lastRDSPrice * ((PRICE_POINT / RDS_POINT) * FIXED_POINT)
-    let ethPrice = 0
     const latestBlockNum = Number(results[0].number)
 
     const priceMap = new Map()
     for (const price of results[1]) {
       priceMap.set(price.rToken, Number(price.underlyingPrice))
-      if (price.anchorSymbol === 'ETH') {
-        ethPrice = Number(price.underlyingPrice)
-      }
     }
     const rewardsPerBlock = Number(results[2])
 
     const lendingPoolTitles = ['DOL', 'HBTC', 'HETH', 'WHT']
-    const exchangingPoolTitles = ['HUSD/DOL', 'HUSD/RDS', 'HT/DOL', 'HT/RDS']
-    const lpUrls = [
-      `${this.config.swapUrl}/#/add/0x1D8684e6CdD65383AfFd3D5CF8263fCdA5001F13/0xdb4c5b219168F926c2c0C776438B8355a3A4018e`,
-      `${this.config.swapUrl}/#/add/0x1D8684e6CdD65383AfFd3D5CF8263fCdA5001F13/0xdb4c5b219168F926c2c0C776438B8355a3A4018e`,
-      `${this.config.swapUrl}/#/add/0x1D8684e6CdD65383AfFd3D5CF8263fCdA5001F13/0xdb4c5b219168F926c2c0C776438B8355a3A4018e`,
-      `${this.config.swapUrl}/#/add/0x1D8684e6CdD65383AfFd3D5CF8263fCdA5001F13/0xdb4c5b219168F926c2c0C776438B8355a3A4018e`,
-    ]
+    const exchangingPoolTitles = this.config.stakingPools.map((p) => p.symbol)
+    const lpUrls = []
+    for (const poolConfig of this.config.stakingPools) {
+      let addressesSuffix = ''
+      const pairInfo = this._lpPairs[poolConfig.pairAddress]
+      if (pairInfo) {
+        addressesSuffix = `/${pairInfo.address0}/${pairInfo.address1}`
+      }
+      const url = `${this.config.swapUrl}/#/add${addressesSuffix}`
+      lpUrls.push(url)
+    }
 
     const pools = []
     const totalPools = results[3].length
@@ -205,8 +210,9 @@ export default class RealDAOService extends RealDAO {
         pool.title = lendingPoolTitles.shift()
       } else {
         // POOL_TYPE_EXCHANGING
-        pool.totalPowerNormalized = (pool.totalPowerCorrect * ethPrice) / FIXED_POINT
-        pool.underlyingPrice = ethPrice
+        const lpPrice = this._lpPairs[pool.tokenAddr] ? this._lpPairs[pool.tokenAddr].lpPrice : 100000000
+        pool.totalPowerNormalized = (pool.totalPowerCorrect * lpPrice) / LP_TOKEN_POINT
+        pool.underlyingPrice = lpPrice
         pool.title = exchangingPoolTitles.shift()
         pool.lpUrl = lpUrls.shift()
       }
@@ -228,12 +234,15 @@ export default class RealDAOService extends RealDAO {
         const totalMined = newMined * RDS_POINT + Number(pool.accumulatedTokens)
         pool.rewardIndex = Number(pool.rewardIndex) + (totalMined * FIXED_POINT) / pool.totalPowerCorrect
       }
-      pools.push(pool)
+      if (pool.title) {
+        pools.push(pool)
+      }
     }
     const my = []
     if (account) {
       const accountRecords = results[4]
       for (let i = 0; i < accountRecords.length; i++) {
+        if (!pools[i]) break
         const item = Object.assign({}, accountRecords[i])
         const rewardIndex = Number(pools[i].rewardIndex)
         const power = Number(item.power)
@@ -408,5 +417,42 @@ export default class RealDAOService extends RealDAO {
     }
     total += (end - start) * INITIAL_REWARD
     return Math.floor(total)
+  }
+
+  async _fetchRDSPrice() {
+    const uniswapPair = this.uniswapPairView(this.config.rdsPair.address)
+    const reserves = await uniswapPair.getReserves().call()
+    const price = (Number(reserves[0]) * 10 ** this.config.rdsPair.decimalsDiff) / Number(reserves[1])
+    this._lastRDSPrice = Number(price.toFixed(3))
+  }
+
+  async _fetchLPPairInfo(pairAddress, stableSymbol) {
+    const uniswapPair = this.uniswapPairView(pairAddress)
+    if (!this._lpPairs[pairAddress]) {
+      const addresses = await Promise.all([uniswapPair.token0().call(), uniswapPair.token1().call()])
+      const token0 = this.erc20Token(addresses[0])
+      const symbol0 = await token0.symbol().call()
+      const stablePosition = symbol0 === stableSymbol ? 0 : 1
+      const address0 = addresses[stablePosition]
+      const address1 = addresses[1 - stablePosition]
+      const decimals = await this.erc20Token(address0).decimals().call()
+      this._lpPairs[pairAddress] = {
+        address0,
+        address1,
+        stablePosition,
+        stableDecimals: Number(decimals),
+      }
+    }
+    const results = await Promise.all([uniswapPair.totalSupply().call(), uniswapPair.getReserves().call()])
+    const pairInfo = this._lpPairs[pairAddress]
+    pairInfo.totalSupply = Number(results[0])
+    if (pairInfo.stablePosition === 0) {
+      pairInfo.stableReserves = Number(results[1][0])
+    } else {
+      pairInfo.stableReserves = Number(results[1][1])
+    }
+    const decimalsDiff = 18 - pairInfo.stableDecimals
+    pairInfo.lpPrice = ((pairInfo.stableReserves * 10 ** decimalsDiff) / pairInfo.totalSupply) * 2 * PRICE_POINT
+    logger.debug('fetchLPPairInfo:', pairAddress, stableSymbol, pairInfo)
   }
 }

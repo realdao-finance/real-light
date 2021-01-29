@@ -8,13 +8,12 @@ export default class Staking extends VueModule {
     this.service = options.service
     this.eb = options.eb
 
-    this.path = '/staking'
     this.model = {
       pools: [],
       my: [],
       loginAccount: null,
       loaded: false,
-      selectedIndex: 2,
+      selectedIndex: 0,
       selectedLPToken: '...',
       needApprove: false,
       lpBalance: '0',
