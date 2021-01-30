@@ -1,5 +1,5 @@
 export default {
-  orchestrator: '0x641D4012EDD25fc81c6762c487B1e2dFF251e622',
+  orchestrator: '0xd999292F8640AA5925da4236176182f7850AE0B3',
   explorer: 'https://etherscan.io',
   indexServer: 'http://localhost:3000',
   swapUrl: 'http://localhost:3000',
