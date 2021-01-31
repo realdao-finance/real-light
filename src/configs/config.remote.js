@@ -2,8 +2,8 @@ export default {
   provider: 'ws://124.156.148.113:8545',
   orchestrator: '0xd999292F8640AA5925da4236176182f7850AE0B3',
   explorer: 'https://etherscan.io',
-  indexServer: 'http://localhost:3000',
-  swapUrl: 'http://localhost:3000',
+  indexServer: 'http://realdao.finance:3000',
+  swapUrl: 'https://ht.mdex.com',
   stakingPools: [
     {
       symbol: 'HUSD/DOL',

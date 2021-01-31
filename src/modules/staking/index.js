@@ -23,6 +23,8 @@ export default class Staking extends VueModule {
       selectPool: this.selectPool.bind(this),
       doApprove: this.doApprove.bind(this),
       doStake: this.doStake.bind(this),
+      doClaim: this.doClaim.bind(this),
+      doExit: this.doExit.bind(this),
     }
     this.lastRefreshTime = 0
     this.refreshInterval = this.config.refreshInterval
@@ -73,6 +75,22 @@ export default class Staking extends VueModule {
       .distributor()
       .mintExchangingPool(pool.id, realAmount)
       .send({ from: this.model.loginAccount })
+  }
+
+  async doClaim() {
+    if (!this.model.loginAccount) return
+    const pool = this.model.pools[this.model.selectedIndex]
+    if (!pool) return
+
+    await this.service.realdao.distributor().claim(pool.id).send({ from: this.model.loginAccount })
+  }
+
+  async doExit() {
+    if (!this.model.loginAccount) return
+    const pool = this.model.pools[this.model.selectedIndex]
+    if (!pool) return
+
+    await this.service.realdao.distributor().exitExchangingPool(pool.id).send({ from: this.model.loginAccount })
   }
 
   async _checkAllowance() {

@@ -34,8 +34,8 @@
                         <td>-</td>
                     </template>
                     <td>
-                        <button class="button-xsmall">Claim</button>
-                        <button class="button-xsmall" v-if="item.ptype === 2">Exit</button>
+                        <button class="button-xsmall" v-on:click.prevent="doClaim">Claim</button>
+                        <button class="button-xsmall" v-if="item.ptype === 2" v-on:click.prevent="doExit">Exit</button>
                         <button class="button-xsmall" v-if="item.ptype === 2" v-on:click.prevent="window.open(item.lpUrl)">Provide Liquidity</a>
                     </td>
                 </tr>
