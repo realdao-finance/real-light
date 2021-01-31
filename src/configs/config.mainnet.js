@@ -1,5 +1,5 @@
 export default {
-  provider: 'https://http-mainnet-node1.hecochain.com',
+  provider: 'https://http-mainnet.hecochain.com',
   orchestrator: '0x64037059072c9CDB5B1de633a5657CD55f489d0C',
   explorer: 'https://scan.hecochain.com',
   indexServer: 'http://realdao.finance:3000',
