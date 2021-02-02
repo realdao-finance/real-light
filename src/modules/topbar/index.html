@@ -3,24 +3,22 @@
   <div v-else class="row title-stats" >
     <div class="col s8">
       <span><b>Total Locked</b>: {{ overview.totalSupplyAccLiteral | toFixed(0) }}$</span>
-      <span>|</span>
       <span><b>Total Borrows</b>: {{ overview.totalBorrowsAccLiteral | toFixed(0) }}$</span>
-      <span>|</span>
       <span><b>Total Reserves</b>: {{ overview.totalReservesAccLiteral | toFixed(0) }}$</span>
       <br />
       <span><b>RDS</b> circulating: {{ overview.rds.circulating }}</span>
       <span>mined: {{ overview.rds.mined }}</span>
-      <span>|</span>
       <span><b>DOL</b> supply: {{ overview.dol.totalSupply }}</span>
     </div>
     <div class="col s4 title-opts">
       <span v-if="!walletInstalled"><a href="https://metamask.io/">Install Metamask</a></span>
       <span v-else-if="!!loginAccount">
         <span>Address: <a v-bind:href="accountUrl">{{ ellipsisAccount }}</a></span>
-        <span>liquidity: {{ liquidity | toFixed(2) }}$</span>
+        <br>
+        <span>liquidity: <b>{{ liquidity | toFixed(2) }}$</b></span>
       </span>
       <span v-else><button v-on:click="login" class="btn btn-flat btn-small deep-purple accent-3 white-text">{{ walletButtonText }}</button></span>
       <!-- <button v-on:click="toogleTheme" class="btn btn-flat btn-small deep-purple accent-3 white-text" >{{ theme }}</button> -->
     </div>
   </div>
-</template>  
+</template>

@@ -1,49 +1,51 @@
 <template>
     <div v-if="!loaded">Loading...</div>
     <div v-else>
-        <h5>Markets</h5>
-        <table class="highlight">
-            <thead>
-                <tr>
-                    <th>Symbol</th>
-                    <th>Supply Rate</th>
-                    <th>Borrow Rate</th>
-                    <th>Total Cash</th>
-                    <th>Total Borrows</th>
-                    <th>Total Reserves</th>
-                    <!-- <th>Exchange Rate</th>
-                    <th>Reserve Factor</th>
-                    <th>Collateral Factor</th>
-                    <th>Liquidation Factor</th> -->
-                    <template v-if="balances !== null">
-                        <th>Balance</th>
-                        <th>Collateral</th>
-                        <th>Debt</th>
-                    </template>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in markets" :key="item.symbol" v-on:click="selectMarket(index)" class="pointer">
-                    <td><img :src="'/assets/' + item.underlyingSymbol + '.svg'" class="asset-icon">{{ item.underlyingSymbol }}</td>
-                    <td>{{ item.supplyRatePerYear | toFixedPercent(4) }}</td>
-                    <td>{{ item.borrowRatePerYear | toFixedPercent(4) }}</td>
-                    <td>{{ item.totalCashLiteral | toFixed(2) }}</td>
-                    <td>{{ item.totalBorrowsLiteral | toFixed(2) }}</td>
-                    <td>{{ item.totalReservesLiteral | toFixed(2) }}</td>
-                    <!-- <td>{{ item.exchangeRateLiteral }}</td>
-                    <td>{{ item.reserveFactorLiteral }}</td>
-                    <td>{{ item.collateralFactorLiteral }}</td>
-                    <td>{{ item.liquidationIncentiveLiteral }}</td> -->
-                    <template v-if="balances !== null">
-                        <td>{{ balances[item.symbol].tokenBalanceLiteral  | toFixed(2) }}</td>
-                        <td>{{ balances[item.symbol].collateralBalanceLiteral | toFixed(2) }}</td>
-                        <td>{{ balances[item.symbol].borrowBalanceLiteral | toFixed(2) }}</td>
-                    </template>
-                </tr>
-            </tbody>
-        </table>
-        <div class="blank"></div>
-        <div class="row ">
+        <!-- <h5>Markets</h5> -->
+        <div class="title-stats">
+            <table class="highlight">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Supply Rate</th>
+                        <th>Borrow Rate</th>
+                        <th>Total Cash</th>
+                        <th>Total Borrows</th>
+                        <th>Total Reserves</th>
+                        <!-- <th>Exchange Rate</th>
+                        <th>Reserve Factor</th>
+                        <th>Collateral Factor</th>
+                        <th>Liquidation Factor</th> -->
+                        <template v-if="balances !== null">
+                            <th>Balance</th>
+                            <th>Collateral</th>
+                            <th>Debt</th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in markets" :key="item.symbol" v-on:click="selectMarket(index)" class="pointer">
+                        <td><img :src="'/assets/' + item.underlyingSymbol + '.svg'" class="asset-icon">{{ item.underlyingSymbol }}</td>
+                        <td>{{ item.supplyRatePerYear | toFixedPercent(4) }}</td>
+                        <td>{{ item.borrowRatePerYear | toFixedPercent(4) }}</td>
+                        <td>{{ item.totalCashLiteral | toFixed(2) }}</td>
+                        <td>{{ item.totalBorrowsLiteral | toFixed(2) }}</td>
+                        <td>{{ item.totalReservesLiteral | toFixed(2) }}</td>
+                        <!-- <td>{{ item.exchangeRateLiteral }}</td>
+                        <td>{{ item.reserveFactorLiteral }}</td>
+                        <td>{{ item.collateralFactorLiteral }}</td>
+                        <td>{{ item.liquidationIncentiveLiteral }}</td> -->
+                        <template v-if="balances !== null">
+                            <td>{{ balances[item.symbol].tokenBalanceLiteral  | toFixed(2) }}</td>
+                            <td>{{ balances[item.symbol].collateralBalanceLiteral | toFixed(2) }}</td>
+                            <td>{{ balances[item.symbol].borrowBalanceLiteral | toFixed(2) }}</td>
+                        </template>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row title-stats pure-g">
+            <div class="pure-u-1-3">
                 <div class="col s12">
                   <ul id="tabs" class="tabs">
                     <li class="tab col s3"><a href="#supply" >Supply</a></li>
@@ -54,42 +56,35 @@
                 </div>
                 <div id="supply" class="col s12">
                     <form class="form">
-                        <fieldset>
-                            <legend>Supply <b>{{ selectedSymbol }}</b></legend>
-                            <input v-model="inputSupplyAmount" placeholder="Amount" /><br />
-                            <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn waves-effect waves-light">Approve</button>
-                            <button v-on:click.prevent="doSupply" class="btn waves-effect waves-light">Supply</button>
-                        </fieldset>
+                        <div class="form-title">Supply <b>{{ selectedSymbol }}</b></legend>
+                        <input v-model="inputSupplyAmount" placeholder="Amount" /><br />
+                        <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn waves-effect waves-light">Approve</button>
+                        <button v-on:click.prevent="doSupply" class="btn waves-effect waves-light">Supply</button>
                     </form>
                 </div>
                 <div id="borrow" class="col s12">
                     <form class="form">
-                        <fieldset>
-                            <legend>Borrow <b>{{ selectedSymbol }}</b></legend>
-                            <input v-model="inputBorrowAmount" placeholder="Amount" /><br />
-                            <button v-on:click.prevent="doBorrow" class="btn waves-effect waves-light">Borrow</button>
-                        </fieldset>
+                        <div class="form-title">Borrow <b>{{ selectedSymbol }}</b></legend>
+                        <input v-model="inputBorrowAmount" placeholder="Amount" /><br />
+                        <button v-on:click.prevent="doBorrow" class="btn waves-effect waves-light">Borrow</button>
                     </form>
                 </div>
                 <div id="redeem" class="col s12">
                     <form class="form">
-                        <fieldset>
-                            <legend>Redeem <b>{{ selectedSymbol }}</b></legend>
-                            <input v-model="inputRedeemAmount" placeholder="Amount" />
-                            <button v-on:click.prevent="doRedeem" class="btn waves-effect waves-light">Redeem</button>
-                        </fieldset>
+                        <div class="form-title">Redeem <b>{{ selectedSymbol }}</b></legend>
+                        <input v-model="inputRedeemAmount" placeholder="Amount" />
+                        <button v-on:click.prevent="doRedeem" class="btn waves-effect waves-light">Redeem</button>
                     </form>
                 </div>
                 <div id="repay" class="col s12">
                     <form class="form">
-                        <fieldset>
-                            <legend>Repay <b>{{ selectedSymbol }}</b></legend>
-                            <input v-model="inputRepayAmount" placeholder="Amount" />
-                            <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text">Approve</button>
-                            <button v-on:click.prevent="doRepay" class="btn waves-effect waves-light">Repay</button>
-                        </fieldset>
+                        <div class="form-title">Repay <b>{{ selectedSymbol }}</b></legend>
+                        <input v-model="inputRepayAmount" placeholder="Amount" />
+                        <button v-show="needApprove" v-on:click.prevent="doApprove" class="btn btn-flat btn-small deep-purple accent-3 white-text">Approve</button>
+                        <button v-on:click.prevent="doRepay" class="btn waves-effect waves-light">Repay</button>
                     </form>
-                </div> 
+                </div>
+            </div>
         </div>
     </div>
 </template>

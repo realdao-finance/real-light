@@ -26,15 +26,14 @@ block scripts
 block content
   div#app
     div.nav
-      img(src='/assets/logo.png')
+      img(src='/assets/logo.svg')
       br
       span.link
         router-link(to='/lending')
           span Lending
         router-link(to='/staking')
           span Staking
-    hr
     Topbar
-    hr
     keep-alive
       router-view
+    div.copyright &copy;realDAO
