@@ -1,60 +1,60 @@
 <template>
     <div v-if="!loaded">Loading...</div>
     <div v-else>
-        <h5>Staking</h5>
-        <table class="highlight">
-            <thead>
-                <tr>
-                    <th>Pool</th>
-                    <th>Total Power</th>
-                    <th>APY</th>
-                    <th>State</th>
-                    <th>Start Block</th>
-                    <th>My Power</th>
-                    <th>Claimed</th>
-                    <th>Unclaimed</th>
-                    <th>Operation</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in pools" :key="item.id" v-bind:class="[item.ptype === 2 ? 'pointer' : '']" v-on:click="selectPool(index)">
-                    <td><img :src="'/assets/s' + index + '.svg'" class="asset-icon">{{ item.title }}</td>
-                    <td>{{ item.totalPowerNormalizedLiteral | toFixed(0) }}</td>
-                    <td>{{ item.apy | toFixedPercent(2) }}</td>
-                    <td>{{ item.state }}</td>
-                    <td>{{ item.startBlock }}</td>
-                    <template v-if="my.length>0">
-                        <td>{{ my[index].powerNormalizedLiteral.toFixed(2) }} ({{ my[index].powerRatio | toFixedPercent(2) }})</td>
-                        <td>{{ my[index].claimedLiteral | toFixed(4) }}</td>
-                        <td>{{ my[index].unclaimedLiteral | toFixed(4) }}</td>
-                    </template>
-                    <template v-else>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </template>
-                    <td>
-                        <button class="button-xsmall" v-on:click.prevent="doClaim">Claim</button>
-                        <button class="button-xsmall" v-if="item.ptype === 2" v-on:click.prevent="doExit">Exit</button>
-                        <button class="button-xsmall" v-if="item.ptype === 2" v-on:click.prevent="window.open(item.lpUrl)">Provide Liquidity</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="pure-g">
-            <div class="pure-u-1-3"></div>
+        <!-- <h5>Staking</h5> -->
+        <div class="title-stats">
+            <table class="highlight">
+                <thead>
+                    <tr>
+                        <th>Pool</th>
+                        <th>Total Power</th>
+                        <th>APY</th>
+                        <th>State</th>
+                        <th>Start Block</th>
+                        <th>My Power</th>
+                        <th>Claimed</th>
+                        <th>Unclaimed</th>
+                        <th>Operation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in pools" :key="item.id" v-bind:class="[item.ptype === 2 ? 'pointer' : '']" v-on:click="selectPool(index)">
+                        <td><img :src="'/assets/s' + index + '.svg'" class="asset-icon">{{ item.title }}</td>
+                        <td>{{ item.totalPowerNormalizedLiteral | toFixed(0) }}</td>
+                        <td>{{ item.apy | toFixedPercent(2) }}</td>
+                        <td>{{ item.state }}</td>
+                        <td>{{ item.startBlock }}</td>
+                        <template v-if="my.length>0">
+                            <td>{{ my[index].powerNormalizedLiteral.toFixed(2) }} ({{ my[index].powerRatio | toFixedPercent(2) }})</td>
+                            <td>{{ my[index].claimedLiteral | toFixed(4) }}</td>
+                            <td>{{ my[index].unclaimedLiteral | toFixed(4) }}</td>
+                        </template>
+                        <template v-else>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </template>
+                        <td>
+                            <button class="button-xsmall" v-on:click.prevent="doClaim">Claim</button>
+                            <button class="button-xsmall" v-if="item.ptype === 2" v-on:click.prevent="doExit">Exit</button>
+                            <button class="button-xsmall" v-if="item.ptype === 2" v-on:click.prevent="window.open(item.lpUrl)">Provide Liquidity</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pure-g title-stats">
+            <!-- <div class="pure-u-1-3"></div> -->
             <div class="pure-u-1-3">
                 <form class="form">
-                    <fieldset>
-                        <legend>Stake LP Token <b>({{ selectedLPToken }})</b></legend>
-                        <span>Balance: {{ lpBalance }}</span>
-                        <input placeholder="Amount" v-model="inputStakeAmount"/>
-                        <button v-show="needApprove" class="btn waves-effect waves-light" v-on:click.prevent="doApprove">Approve</button>
-                        <button class="btn waves-effect waves-light" v-on:click.prevent="doStake">Stake</button>
-                    </fieldset>
+                    <div class="form-title">Stake LP Token <b>({{ selectedLPToken }})</b></div>
+                    <span>Balance: {{ lpBalance }}</span>
+                    <input placeholder="Amount" v-model="inputStakeAmount"/>
+                    <button v-show="needApprove" class="btn waves-effect waves-light" v-on:click.prevent="doApprove">Approve</button>
+                    <button class="btn waves-effect waves-light" v-on:click.prevent="doStake">Stake</button>
                 </form>
             </div>
-            <div class="pure-u-1-3"></div>
+            <!-- <div class="pure-u-1-3"></div> -->
         </div>
     </div>
 </template>

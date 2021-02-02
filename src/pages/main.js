@@ -25,6 +25,9 @@ export async function main(argv) {
   await loadModules(moduleDirs, options, routes)
   new Vue({
     el: '#app',
-    router: new VueRouter({ routes }),
+    router: new VueRouter({
+      routes,
+      linkExactActiveClass: 'active'
+    }),
   })
 }
