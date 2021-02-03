@@ -4,6 +4,9 @@ html, body {
   font-family: Montserrat-Medium;
   font-size: 14px;
   color: #FFFFFF;
+}
+
+body {
   background: url(../assets/background.svg) no-repeat center center;
   background-size: cover;
 }
@@ -215,4 +218,29 @@ html, body {
   color: rgba(255, 255, 255, .4);
   margin-top: 233px;
   margin-bottom: 30px;
+}
+
+/* loading */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.loading {
+  text-align: center;
+  margin-top: 20px;
+}
+.loading svg {
+  animation: 2s rotate linear infinite;
+  height: 16px;
+  width: 16px;
+}
+path {
+  stroke: #ff007a;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
